@@ -1,3 +1,26 @@
-# Tugas FP PBO Tetris
-* William Handi Wijaya
-* Stefanus Albert Kosim
+# Tugas FP PBO
+Membuat game tetris.
+
+# Tim
+#### Nama Kelompok: KamiSama
+#### Judul FP: Block Stack
+#### Anggota Tim:
+* William Handi Wijaya 05111940000087
+* Stefanus Albert Kosim 05111940000096
+
+# Kontrol
+Atas = putar balok  
+Bawah = percepat laju turun balok.  
+Kiri = geser balok ke kiri.  
+Kanan = geser balok ke kanan.
+
+# Cara Import
+1. Download library [javaFX](https://gluonhq.com/products/javafx/).
+2. Buat Java Project baru.
+3. Buat package `com.application` di dalam project yang sudah dibuat.
+4. Import source code ke package `com.application`.
+5. Tambahkan javaFX library di build path project.  
+	* Link panduan: <https://www.javatpoint.com/javafx-with-eclipse>
+6. Tambahkan VM argument di 'Run Configurations'
+	* Syntax: `--module-path "/path/to/javafx-sdk/lib"  --add modules=javafx.controls,javafx.fxml`
+	* ![Panduan mengatur VM argument](Argument.jpg)
