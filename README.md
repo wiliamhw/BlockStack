@@ -1,2 +1,3 @@
-# Tetris
-Tugas FP PBO William dan Kosim
+Tugas FP PBO Tetris
+* William Handi Wijaya
+* Stefanus Albert Kosim
