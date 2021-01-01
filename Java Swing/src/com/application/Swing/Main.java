@@ -1,4 +1,4 @@
-package com.application;
+package com.application.Swing;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
