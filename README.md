@@ -22,5 +22,5 @@ Kanan = geser balok ke kanan.
 5. Tambahkan javaFX library di build path project.  
 	* Link panduan: <https://www.javatpoint.com/javafx-with-eclipse>
 6. Tambahkan VM argument di 'Run Configurations'
-	* Syntax: `--module-path "/path/to/javafx-sdk/lib"  --add modules=javafx.controls,javafx.fxml`
+	* Syntax: `--module-path "/path/to/javafx-sdk/lib"  --add-modules=javafx.controls,javafx.fxml`
 	* ![Panduan mengatur VM argument](Argument.jpg)

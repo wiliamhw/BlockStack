@@ -3,23 +3,23 @@ package com.application;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
-public class Form {
+class Form {
 	Rectangle a;
 	Rectangle b;
 	Rectangle c;
 	Rectangle d;
 	Color color;
 	private String name;
-	public int form = 1;
+	int form = 1;
 
-	public Form(Rectangle a, Rectangle b, Rectangle c, Rectangle d) {
+	Form(Rectangle a, Rectangle b, Rectangle c, Rectangle d) {
 		this.a = a;
 		this.b = b;
 		this.c = c;
 		this.d = d;
 	}
 
-	public Form(Rectangle a, Rectangle b, Rectangle c, Rectangle d, String name) {
+	Form(Rectangle a, Rectangle b, Rectangle c, Rectangle d, String name) {
 		this.a = a;
 		this.b = b;
 		this.c = c;
@@ -56,13 +56,11 @@ public class Form {
 		this.d.setFill(color);
 	}
 
-
-	public String getName() {
+	String getName() {
 		return name;
 	}
 
-
-	public void changeForm() {
+	void changeForm() {
 		if (form != 4) {
 			form++;
 		} else {
