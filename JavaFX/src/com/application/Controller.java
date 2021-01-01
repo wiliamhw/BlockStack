@@ -2,15 +2,15 @@ package com.application;
 
 import javafx.scene.shape.Rectangle;
 
-class Controller {
+public class Controller {
 	// Getting the numbers and the MESH from Tetris
-	static final int MOVE = Tetris.MOVE;
-	static final int SIZE = Tetris.SIZE;
-	static int XMAX = Tetris.XMAX;
-	static int YMAX = Tetris.YMAX;
-	static int[][] MESH = Tetris.MESH;
+	public static final int MOVE = Tetris.MOVE;
+	public static final int SIZE = Tetris.SIZE;
+	public static int XMAX = Tetris.XMAX;
+	public static int YMAX = Tetris.YMAX;
+	public static int[][] MESH = Tetris.MESH;
 
-	static void MoveRight(Form form) {
+	public static void MoveRight(Form form) {
 		if (form.a.getX() + MOVE <= XMAX - SIZE && form.b.getX() + MOVE <= XMAX - SIZE
 				&& form.c.getX() + MOVE <= XMAX - SIZE && form.d.getX() + MOVE <= XMAX - SIZE) {
 			int movea = MESH[((int) form.a.getX() / SIZE) + 1][((int) form.a.getY() / SIZE)];
@@ -26,7 +26,7 @@ class Controller {
 		}
 	}
 
-	static void MoveLeft(Form form) {
+	public static void MoveLeft(Form form) {
 		if (form.a.getX() - MOVE >= 0 && form.b.getX() - MOVE >= 0 && form.c.getX() - MOVE >= 0
 				&& form.d.getX() - MOVE >= 0) {
 			int movea = MESH[((int) form.a.getX() / SIZE) - 1][((int) form.a.getY() / SIZE)];
@@ -42,7 +42,7 @@ class Controller {
 		}
 	}
 
-	static Form makeRect() {
+	public static Form makeRect() {
 		int block = (int) (Math.random() * 100);
 		String name;
 		Rectangle a = new Rectangle(SIZE - 1, SIZE - 1), b = new Rectangle(SIZE - 1, SIZE - 1),

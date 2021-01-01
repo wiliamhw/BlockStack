@@ -3,7 +3,7 @@ package com.application;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
-class Form {
+public class Form {
 	Rectangle a;
 	Rectangle b;
 	Rectangle c;
@@ -12,14 +12,14 @@ class Form {
 	private String name;
 	int form = 1;
 
-	Form(Rectangle a, Rectangle b, Rectangle c, Rectangle d) {
+	public Form(Rectangle a, Rectangle b, Rectangle c, Rectangle d) {
 		this.a = a;
 		this.b = b;
 		this.c = c;
 		this.d = d;
 	}
 
-	Form(Rectangle a, Rectangle b, Rectangle c, Rectangle d, String name) {
+	public Form(Rectangle a, Rectangle b, Rectangle c, Rectangle d, String name) {
 		this.a = a;
 		this.b = b;
 		this.c = c;
@@ -56,11 +56,11 @@ class Form {
 		this.d.setFill(color);
 	}
 
-	String getName() {
+	public String getName() {
 		return name;
 	}
 
-	void changeForm() {
+	public void changeForm() {
 		if (form != 4) {
 			form++;
 		} else {

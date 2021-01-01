@@ -24,9 +24,9 @@ public class Tetris extends Application {
 	public static int XMAX = SIZE * 12;
 	public static int YMAX = SIZE * 24;
 	public static int[][] MESH = new int[XMAX / SIZE][YMAX / SIZE];
-	private static Pane group = new Pane();
+	private static Pane group = new Pane(); //PENTING
 	private static Form object;
-	private static Scene scene = new Scene(group, XMAX + 150, YMAX);
+	private static Scene scene = new Scene(group, XMAX + 150, YMAX); // PENTING
 	public static int score = 0;
 	private static int top = 0;
 	private static boolean game = true;
