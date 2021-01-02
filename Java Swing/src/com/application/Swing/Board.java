@@ -220,7 +220,7 @@ public class Board extends JPanel implements ActionListener {
 			}
 
 			if (numFullLines > 0) {
-				score += numFullLines * 200;
+				score += numFullLines;
 				update(statusBar);
 				isFallingFinished = true;
 //				curPiece.setShape(Tetrominoes.NoShape);
@@ -239,15 +239,13 @@ public class Board extends JPanel implements ActionListener {
 
 			--newY;
 		}
-		score += BOARD_HEIGHT - newY;
+		score += 2 * (BOARD_HEIGHT - newY);
 		update(statusBar);
 
 		pieceDropped();
 	}
 
 	class MyTetrisAdapter extends KeyAdapter {
-		int counter = 0;
-		
 		@Override
 		public void keyPressed(KeyEvent ke) {
 			if (!isStarted || curPiece.getShape() == Tetrominoes.NoShape)
@@ -279,12 +277,8 @@ public class Board extends JPanel implements ActionListener {
 				dropDown();
 				break;
 			case KeyEvent.VK_DOWN:
-				++counter;
-				if (counter == 4) {
-					++score;
-					update(statusBar);
-					counter = 0;
-				}
+				++score;
+				update(statusBar);
 				oneLineDown();
 				break;
 			}
