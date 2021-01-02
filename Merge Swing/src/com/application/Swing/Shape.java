@@ -22,7 +22,7 @@ public class Shape {
 			color = c;
 		}
 	}
-	
+
 	private Tetrominoes pieceShape;
 	private int[][] coords;
 

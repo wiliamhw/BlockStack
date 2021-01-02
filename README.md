@@ -8,11 +8,21 @@ Membuat game tetris.
 * William Handi Wijaya 05111940000087
 * Stefanus Albert Kosim 05111940000096
 
-# Kontrol
-Atas = putar balok  
+# Kontrol (Java Swing)
+Atas = putar balok.
 Bawah = percepat laju turun balok.  
-Kiri = geser balok ke kiri.  
-Kanan = geser balok ke kanan.
+Kiri = geser ke kiri.  
+Kanan = geser ke kanan.
+
+# Kontrol (Java Swing)
+Huruf "P" = pause.
+Kiri = geser ke kiri.  
+Kanan = geser ke kanan.
+Atas = putar ke kiri.
+Huruf "Z = putar ke kanan.
+Spasi = hard drop.
+Bawah = soft drop.
+
 
 # Cara Import
 1. Download library [javaFX](https://gluonhq.com/products/javafx/).
