@@ -11,7 +11,7 @@ import java.util.*;
 public class ScoreBoard extends JPanel{
 
 	BufferedReader scoreReader;
-	SortedMap<Integer, String> scoreList;
+	TreeMap<Integer, String> scoreList;
 	private int areaWidth;
 	private int areaHeight;
 	private int wButton;
@@ -21,14 +21,14 @@ public class ScoreBoard extends JPanel{
 	private int score = 0; 
 	private int smallestScore;
 	private String insertToFile;
-	private int flag = 0;
+	private int flagPlay = 0;
 	
 	public ScoreBoard(int width, int height) {
 		this.areaWidth = width;
 		this.areaHeight = height;
 		wButton = 100;
 		hButton = 50;
-		flag = 0;
+		flagPlay = 0;
 		setLayout(null);
 		scoreList = new TreeMap<Integer, String>(Collections.reverseOrder());
 		insertName = new JTextField();
@@ -94,7 +94,7 @@ public class ScoreBoard extends JPanel{
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if(e.getActionCommand().equals("Okay")) {
-				if(flag == 1) {
+				if(flagPlay == 1) {
 					scoreList.put(score, insertName.getText());
 					writeFile();
 					System.out.println(insertName.getText());
@@ -108,13 +108,13 @@ public class ScoreBoard extends JPanel{
 	}
 	
 	public void setScore(int score) {
-		flag = 1;
+		flagPlay = 1;
 		if(scoreList != null)
 			smallestScore = scoreList.lastKey();
 		if(score > smallestScore) {
 			this.score = score;
 			scoreList.put(score, "");
-			scoreList.remove(scoreList.lastKey());
+			scoreList.pollLastEntry();
 			
 			int index = 0;
 			for(Map.Entry mapElement : scoreList.entrySet()) {
@@ -123,23 +123,25 @@ public class ScoreBoard extends JPanel{
 					break;
 				index++;
 			}
-			
 			insertName.setFont(new Font("Comic Sans MS", Font.PLAIN, 24));
 			insertName.setBounds(20, (105+index*45)-30, areaWidth/2 - 20, 45);
 			this.add(insertName);
-			scoreList.put(score, insertName.getText());
-			System.out.println(insertName.getText());
-			
 		}
 	
 	}
 	
 	private void writeFile() {
 		insertToFile = "";
+		int index = 0;
 		for(Map.Entry mapElement : scoreList.entrySet()) {
 			int key = (int)mapElement.getKey();
 			String value = (String)mapElement.getValue();
-			insertToFile = insertToFile+ value + ":" + Integer.toString(key)+"\n";
+			if(index < 9) {
+				insertToFile = insertToFile+ value + ":" + Integer.toString(key)+"\n";
+			} else {
+				insertToFile = insertToFile+ value + ":" + Integer.toString(key);
+			}
+			index++;
 		}
 		
 		
