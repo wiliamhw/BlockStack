@@ -19,7 +19,7 @@ Membuat game tetris.
 * Kiri = geser ke kiri.  
 * Kanan = geser ke kanan.  
 * Atas = putar ke kiri.  
-* Huruf "Z = putar ke kanan.  
+* Huruf "Z" = putar ke kanan.  
 * Spasi = hard drop.  
 * Bawah = soft drop.  
 
