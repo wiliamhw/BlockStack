@@ -30,7 +30,7 @@ Membuat game tetris.
 
 # Cara Putar Lagu di Java Swing
 1. Download lagu [Tetris99](https://drive.google.com/file/d/14dCc7kttCa9iL0pGY0h-G_1Fh-rYgn0u/view?usp=sharing).
-2. Letakkan lagu `Tetriss99` ke folder 'Java Swing'.
+2. Letakkan lagu `Tetriss99` ke folder `Java Swing`.
 3. Import folder `Java Swing` di IDE.
 
 # Cara Import JavaFX
