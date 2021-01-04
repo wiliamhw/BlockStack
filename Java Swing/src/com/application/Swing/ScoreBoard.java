@@ -17,6 +17,7 @@ public class ScoreBoard extends JPanel{
 	private int wButton;
 	private int hButton;
 	private JButton okay;
+
 	private JTextField insertName = null;
 	private int score = 0; 
 	private int smallestScore;
@@ -42,7 +43,6 @@ public class ScoreBoard extends JPanel{
 		score = 0;
 		readFile();
 		this.setVisible(true);
-		
 	}
 	
 	@Override
