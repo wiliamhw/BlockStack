@@ -6,13 +6,7 @@ Membuat game tetris.
 #### Judul FP: Block Stack
 #### Anggota Tim:
 * William Handi Wijaya 05111940000087
-* Stefanus Albert Kosim 05111940000096
-
-## Kontrol (Java FX)
-* Atas = putar balok.  
-* Bawah = percepat laju turun balok.  
-* Kiri = geser ke kiri.  
-* Kanan = geser ke kanan.  
+* Stefanus Albert Kosim 05111940000096  
 
 ## Kontrol (Java Swing)
 * Escape = pause.  
