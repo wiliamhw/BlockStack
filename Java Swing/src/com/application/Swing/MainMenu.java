@@ -12,6 +12,7 @@ import javax.imageio.ImageIO;
 public class MainMenu extends JPanel {
 
 	private BufferedImage image;
+	private BufferedImage home;
 	private int areaWidth;
 	private int areaHeight;
 	private JButton play = new JButton("Start Game");
@@ -30,7 +31,10 @@ public class MainMenu extends JPanel {
 		setLayout(null);
 		try {
 			image = ImageIO.read(new File("src/images/MenuLogo.png"));
-		} catch(IOException e) { }
+			home = ImageIO.read(new File("src/images/mainmenu.jpg"));
+		} catch(IOException e) {
+			System.out.println(e);
+		}
 
 		play.setBounds(((areaWidth/2) - (wButton/2)), 273, wButton, hButton);
 		score.setBounds(((areaWidth/2) - (wButton/2)), 343, wButton, hButton);
@@ -52,6 +56,7 @@ public class MainMenu extends JPanel {
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
+		g.drawImage(home, 0, 0, null);
 		g.drawImage(image, ((areaWidth/2) - image.getWidth()/2), 20, null);
 	}
 	

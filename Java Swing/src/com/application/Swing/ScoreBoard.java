@@ -48,9 +48,18 @@ public class ScoreBoard extends JPanel{
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
+		try {
+			g.drawImage(Main.background, 0, 0, null);
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		g.setColor(Color.ORANGE);
+		g.fillRect(190, 0, 360, 525);
+	
+		g.setColor(Color.BLACK);
 		g.setFont(new Font("Comic Sans MS", Font.BOLD, 30));
 		g.drawString("ScoreBoard", ((areaWidth/2)-87), 45);
-
+		
 		g.setFont(new Font("Comic Sans MS", Font.PLAIN, 24));
 		int yAdder = 45;
 		int y = 105;
@@ -62,8 +71,8 @@ public class ScoreBoard extends JPanel{
 			Map.Entry m = (Map.Entry) i.next();
 			int key = (Integer) m.getKey();
 			String value = (String) m.getValue();
-			g.drawString(value, 20, y);
-			g.drawString(Integer.toString(key), (areaWidth/2)+120, y);
+			g.drawString(value, 210, y);
+			g.drawString(Integer.toString(key), (areaWidth/2)+90, y);
 			y += yAdder;
 		}
 	}
@@ -123,7 +132,7 @@ public class ScoreBoard extends JPanel{
 				index++;
 			}
 			insertName.setFont(new Font("Comic Sans MS", Font.PLAIN, 24));
-			insertName.setBounds(20, (105+index*45)-30, areaWidth/2 - 20, 45);
+			insertName.setBounds(210, (105+index*45)-30, 90, 35);
 			this.add(insertName);
 		}
 	

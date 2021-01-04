@@ -4,17 +4,23 @@ import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
@@ -45,12 +51,13 @@ public class Board extends JPanel implements ActionListener {
 		// music
 		String filepath = "src/music/Tetris99.wav";
 		musicObject = new Music(filepath);
-		musicObject.playMusic();
+//		musicObject.playMusic();
 		
+		// board
 		curPiece = new Shape();
 		timer = new Timer(400, this); // timer for lines down
 		board = new Tetrominoes[BOARD_WIDTH * BOARD_HEIGHT];
-
+		
 		addKeyListener(new MyTetrisAdapter());
 		start();
 	}
@@ -76,11 +83,11 @@ public class Board extends JPanel implements ActionListener {
 
 		if (isPaused) {
 			timer.stop();
-			musicObject.pauseMusic();
+//			musicObject.pauseMusic();
 			pauseDialog.showDialog();
 		} else {
 			timer.start();
-			musicObject.playMusic();
+//			musicObject.playMusic();
 			pauseDialog.hideDialog();
 		}
 
@@ -146,10 +153,15 @@ public class Board extends JPanel implements ActionListener {
 	@Override
 	public void paint(Graphics g) {
 		super.paint(g);
+		try {
+			g.drawImage(Main.background, 0, 0, null);
+		} catch (Exception e) {
+			System.out.println(e);
+		}
 		Dimension size = getSize();
 		g.setColor(Color.BLACK);
 		int boardTop = (int) size.getHeight() - BOARD_HEIGHT * squareHeight();
-		int boardLeft = 85;
+		int boardLeft = (Main.WIDTH - BOARD_WIDTH * squareWidth())/2;
 		g.fillRect(boardLeft, boardTop, squareWidth() * BOARD_WIDTH, (int) size.getHeight());
 		
 		for (int i = 0; i < BOARD_HEIGHT; i++) {
@@ -173,10 +185,7 @@ public class Board extends JPanel implements ActionListener {
 						curPiece.getShape());
 			}
 		}
-		g.setColor(Color.BLACK);
-		g.setFont(new Font("Comic Sans MS", Font.PLAIN, 20));
-		g.drawString("Score : " + Integer.toString(score), boardLeft + 5 + squareWidth()*10, (int) size.getHeight() - 150);
-		g.drawString("Lines : " + Integer.toString(totalLines), boardLeft + 5 + squareWidth()*10, (int) size.getHeight() - 100);
+		makeScoreBox(g);
 	}
 	
 	private void drawSquare(Graphics g, int x, int y, Tetrominoes shape) {
@@ -189,6 +198,52 @@ public class Board extends JPanel implements ActionListener {
 		g.setColor(color.darker());
 		g.drawLine(x + 1, y + squareHeight() - 1, x + squareWidth() - 1, y + squareHeight() - 1);
 		g.drawLine(x + squareWidth() - 1, y + squareHeight() - 1, x + squareWidth() - 1, y + 1);
+	}
+	
+	private void makeScoreBox(Graphics g) {
+		int width = 137;
+		int height = 211;
+		int x = 42;
+		int y = 310;
+		
+		g.setColor(Color.LIGHT_GRAY);
+		g.fillRect(x - 10, y - 23, width + 20, height + 47);
+		g.setColor(Color.DARK_GRAY);
+		g.fillRect(x, y, width, height);
+		
+		int newWidth = 95;
+		x += (width - newWidth)/2;
+		y = 441;
+		width = newWidth;
+		height = 22;
+		
+		g.setColor(Color.BLACK);
+		g.fillRect(x, y - 67, width, height);
+		g.fillRect(x, y, width, height);
+		
+		g.setColor(Color.WHITE);
+		g.setFont(new Font("Tahoma", Font.BOLD, 18));
+		
+		int tmpX = x;
+		FontMetrics font = g.getFontMetrics();
+		String str = "Score";
+		x = tmpX + (width - font.stringWidth(str))/2;
+		y += (height - font.getHeight())/2 - 67 - 5;
+		
+		g.drawString("Score", x, y);
+		g.drawString("Lines", x, y + 67);
+		
+		g.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		font = g.getFontMetrics();
+		
+		str = Integer.toString(score);
+		x = tmpX + (width - font.stringWidth(str))/2;
+		y += height;
+		g.drawString(str, x, y);
+		
+		str = Integer.toString(totalLines);
+		x = tmpX + (width - font.stringWidth(str))/2;
+		g.drawString(str, x, y + 67);
 	}
 	
 	private Tetrominoes shapeAt(int x, int y) {

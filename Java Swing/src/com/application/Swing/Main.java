@@ -2,17 +2,26 @@ package com.application.Swing;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.image.BufferedImage;
+
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.io.*;
-import java.io.IOException;
 
 public class Main {
 
-	public static final int WIDTH = 550;
-
+	public static BufferedImage background;
+	public static final int WIDTH = 750;
 	public static final int HEIGHT = 600;
 	
 	public static void main(String[] args) {
+		// ingame background
+		try {
+			background = ImageIO.read(new File("src/images/ingame.jpg"));
+		} catch(IOException e) {
+			System.out.println(e);
+		}
+		
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				JFrame frame = new JFrame("Tetris");
