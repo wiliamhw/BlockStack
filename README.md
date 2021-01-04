@@ -30,18 +30,8 @@ Membuat game tetris.
 * Score akan bertambah 1 setiap soft drop.  
 * Score akan bertambah sebanyak (2 * jarak ketinggian) setiap hard drop.  
 
-# Cara Putar Lagu di Java Swing
-1. Download lagu [Tetris99](https://drive.google.com/file/d/14dCc7kttCa9iL0pGY0h-G_1Fh-rYgn0u/view?usp=sharing).
-2. Letakkan lagu `Tetriss99` ke folder `Java Swing\src\music`.
-3. Import folder `Java Swing` di IDE.
-
-# Cara Import JavaFX
-1. Download library [javaFX](https://gluonhq.com/products/javafx/).
-2. Buat Java Project baru.
-3. Buat package `com.application` di dalam project yang sudah dibuat.
-4. Import source code ke package `com.application`.
-5. Tambahkan javaFX library di build path project.  
-	* Link panduan: <https://www.javatpoint.com/javafx-with-eclipse>
-6. Tambahkan VM argument di 'Run Configurations'
-	* Syntax: `--module-path "/path/to/javafx-sdk/lib"  --add-modules=javafx.controls,javafx.fxml`
-	* ![Panduan mengatur VM argument](Argument.jpg)
+# Cara Download Assets
+1. Download assets [Tetris99](https://drive.google.com/file/d/1Suljo33B7DQ7TWR-V7rHMfZzUMnTDup-/view?usp=sharing).
+2. Ekstrak file assets.
+3. Copy file music dan images dari file assets ke folder `Java Swing\src`.
+3. Import/refresh folder `Java Swing` di IDE.
