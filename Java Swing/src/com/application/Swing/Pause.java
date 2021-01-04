@@ -86,7 +86,7 @@ public class Pause extends JDialog {
 				
 			} else if (e.getActionCommand().equals("Quit")) {
 				int choose = JOptionPane.showConfirmDialog(null, "Do you really want to go back to main menu?",
-						"Confirm Back to main menu", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
+						"Confirm Back", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
 				if(choose == JOptionPane.YES_OPTION) {
 					hideDialog();
 					board.gotoScoreboard();

@@ -1,3 +1,4 @@
 .settings
 bin
-src/music/Tetris99.wav
+src/music
+src/images
