@@ -9,29 +9,59 @@ import javax.sound.sampled.Clip;
 
 public class Music {
 	
-	void playMusic(String musicLocation) {
+	private String musicLocation;
+	private File musicPath;
+	private Clip clip;
+	private long clipTimePosition;
+	
+	public Music(String musicLocation) {
+		this.musicLocation = musicLocation;
+		addMusic();
+	}
+	
+	private void addMusic() {
 		try {
-			File musicPath = new File(musicLocation);
+			musicPath = new File(musicLocation);
 			
 			if (musicPath.exists()) {
 				AudioInputStream audioinput = AudioSystem.getAudioInputStream(musicPath);
-				Clip clip = AudioSystem.getClip();
+				clip = AudioSystem.getClip();
 				clip.open(audioinput);
-				clip.start();
-				clip.loop(Clip.LOOP_CONTINUOUSLY );
-				
-//				JOptionPane.showMessageDialog(null, "Hit ok to pause");
-//				long clipTimePosition = clip.getMicrosecondPosition();
-//				clip.stop();
-//				
-//				JOptionPane.showMessageDialog(null, "Hit ok to resume");
-//				clip.setMicrosecondPosition(clipTimePosition);
-//				clip.start();
-//				
-//				JOptionPane.showMessageDialog(null, "Press OK to stop playing");
 			} else {
 				System.out.println("Can't find file");
 			}
+		}
+		catch (Exception ex) {
+			ex.printStackTrace();
+		}
+	}
+
+	public void playMusic() {
+		try {
+			clip.start();
+			clip.loop(Clip.LOOP_CONTINUOUSLY );
+		}
+		catch (Exception ex) {
+			ex.printStackTrace();
+		}
+	}
+	
+	public void pauseMusic() {
+		try {
+			clipTimePosition = clip.getMicrosecondPosition();
+			clip.setMicrosecondPosition(clipTimePosition);
+			clip.stop();
+		}
+		catch (Exception ex) {
+			ex.printStackTrace();
+		}
+	}
+	
+	public void stopMusic() {
+		try {
+			clip.stop();
+			clipTimePosition = 0;
+			clip.setMicrosecondPosition(clipTimePosition);
 		}
 		catch (Exception ex) {
 			ex.printStackTrace();
