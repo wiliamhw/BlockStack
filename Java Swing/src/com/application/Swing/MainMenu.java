@@ -29,9 +29,9 @@ public class MainMenu extends JPanel{
 		hButton = 50;
 		this.setPreferredSize(new Dimension(areaWidth, areaHeight));
 		setLayout(null);
-		try {
-			image = ImageIO.read(new File("src/images/MenuLogo.png"));
-		} catch(IOException e) { }
+//		try {
+//			image = ImageIO.read(new File("MenuLogo.png"));
+//		} catch(IOException e) { }
 
 		play.setBounds(((areaWidth/2) - (wButton/2)), 273, wButton, hButton);
 		score.setBounds(((areaWidth/2) - (wButton/2)), 343, wButton, hButton);
@@ -56,7 +56,7 @@ public class MainMenu extends JPanel{
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		System.out.println("C");
-		g.drawImage(image, ((areaWidth/2) - image.getWidth()/2), 20, null);
+//		g.drawImage(image, ((areaWidth/2) - image.getWidth()/2), 20, null);
 	}
 	
 	public class ButtonHandler implements ActionListener{
@@ -65,22 +65,7 @@ public class MainMenu extends JPanel{
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
 			if(e.getActionCommand().equals("Start Game")) {
-//				Tetris myTetris = new Tetris(areaWidth, areaHeight);
-//				JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(play.getParent());
-//				frame.dispose();
-				
-//				myTetris.setVisible(true);
-//				
-				JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(play.getParent());
-//				Board board = new Board();
-//			    frame.add(board);
-				frame.setContentPane(new Board());
-				frame.setFocusable(true);
-				frame.invalidate();
-				frame.validate();
-				frame.revalidate();
-				frame.getContentPane().requestFocus();
-				frame.getContentPane().setFocusable(true);
+				//run game
 			}
 				
 			else if(e.getActionCommand().equals("Score")) {
@@ -93,7 +78,6 @@ public class MainMenu extends JPanel{
 				
 			else if(e.getActionCommand().equals("Credits")) {
 				//show Credits
-				JOptionPane.showMessageDialog(null, "Udin");
 			}
 			else if(e.getActionCommand().equals("Exit")) {
 				JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(exit.getParent());

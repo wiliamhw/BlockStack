@@ -2,184 +2,57 @@ package com.application.Swing;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
 import com.application.Swing.Shape.Tetrominoes;
 
 public class Board extends JPanel implements ActionListener {
 
-	private static final int BOARD_WIDTH = 10;
-	private static final int BOARD_HEIGHT = 20;
+	private static final int BOARD_WIDTH = 12;
+	private static final int BOARD_HEIGHT = 24;
 	private Timer timer;
 	private boolean isFallingFinished = false;
 	private boolean isStarted = false;
 	private boolean isPaused = false;
-//	private int numLinesRemoved = 0;
-	private int curX = 0;
-	private int curY = 0;
-//	private JLabel statusBar;
-	private Shape curPiece;
-	private ImageIcon icon = new ImageIcon("src/images/null.png");
-	private Tetrominoes[] board;
 	private int score;
 	private int totalLines;
-	private String scoreStr;
+	private int curX = 0;
+	private int curY = 0;
+	private JLabel statusBar;
+	private Shape curPiece;
+	private Tetrominoes[] board;
 
-	public Board() {
+	public Board(Tetris parent) {
+		setFocusable(true);
 		curPiece = new Shape();
 		timer = new Timer(400, this); // timer for lines down
-//		statusBar = parent.getStatusBar();
+		statusBar = parent.getStatusBar();
+		update(statusBar);
 		board = new Tetrominoes[BOARD_WIDTH * BOARD_HEIGHT];
 		clearBoard();
 		addKeyListener(new MyTetrisAdapter());
-		start();
 	}
-
-	public int squareWidth() {
-		return (int)  getSize().getHeight() / BOARD_HEIGHT;
+	
+	private void update(JLabel statusBar) {
+		String text = "Score: " + String.valueOf(score) + "     " 
+				+ "Total lines: " + String.valueOf(totalLines);
+		statusBar.setText(text);
 	}
-
-	public int squareHeight() {
-		return (int) getSize().getHeight() / BOARD_HEIGHT;
-	}
-
-	public Tetrominoes shapeAt(int x, int y) {
-		return board[y * BOARD_WIDTH + x];
-	}
-
-	private void clearBoard() {
-		for (int i = 0; i < BOARD_HEIGHT * BOARD_WIDTH; i++) {
-			board[i] = Tetrominoes.NoShape;
-		}
-	}
-
-	private void pieceDropped() {
-		for (int i = 0; i < 4; i++) {
-			int x = curX + curPiece.x(i);
-			int y = curY - curPiece.y(i);
-			board[y * BOARD_WIDTH + x] = curPiece.getShape();
-		}
-
-		removeFullLines();
-
-		if (!isFallingFinished) {
-			newPiece();
-		}
-	}
-
-	public void newPiece() {
-		curPiece.setRandomShape();
-		curX = BOARD_WIDTH / 2;
-		curY = BOARD_HEIGHT + curPiece.minY();
-
-		if (!tryMove(curPiece, curX, curY - 1)) {
-			curPiece.setShape(Tetrominoes.NoShape);
-			timer.stop();
-			isStarted = false;
-//			statusBar.setText("Game Over");
-			int input = JOptionPane.showConfirmDialog(null, "Your Score : " + score, "Game Over", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, icon);
-			if(input == 0) {
-				JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this.getParent());
-				
-				ScoreBoard scoreBoard = new ScoreBoard(getSize().width, getSize().height);
-				frame.setContentPane(scoreBoard);
-				frame.setFocusable(true);
-				scoreBoard.setScore(score);
-				frame.invalidate();
-				frame.validate();
-				frame.revalidate();
-				frame.getContentPane().requestFocus();
-				frame.getContentPane().setFocusable(true);
-			}
-		}
-	}
-
-	private void oneLineDown() {
-		if (!tryMove(curPiece, curX, curY - 1))
-			pieceDropped();
-	}
-
-	@Override
-	public void actionPerformed(ActionEvent ae) {
-		if (isFallingFinished) {
-			isFallingFinished = false;
-			newPiece();
-		} else {
-			oneLineDown();
-		}
-	}
-
-	private void drawSquare(Graphics g, int x, int y, Tetrominoes shape) {
-		Color color = shape.color;
-		g.setColor(color);
-		g.fillRect(x + 1, y + 1, squareWidth() - 2, squareHeight() - 2);
-		g.setColor(color.brighter());
-		g.drawLine(x, y + squareHeight() - 1, x, y);
-		g.drawLine(x, y, x + squareWidth() - 1, y);
-		g.setColor(color.darker());
-		g.drawLine(x + 1, y + squareHeight() - 1, x + squareWidth() - 1, y + squareHeight() - 1);
-		g.drawLine(x + squareWidth() - 1, y + squareHeight() - 1, x + squareWidth() - 1, y + 1);
-	}
-
-	@Override
-	public void paint(Graphics g) {
-		super.paint(g);
-		Dimension size = getSize();
-		g.setColor(Color.BLACK);
-		int boardTop = (int) size.getHeight() - BOARD_HEIGHT * squareHeight();
-		int boardLeft = 85;
-		g.fillRect(boardLeft, boardTop, squareWidth()*10, size.height);
-		
-		for (int i = 0; i < BOARD_HEIGHT; i++) {
-			for (int j = 0; j < BOARD_WIDTH; ++j) {
-				
-				g.setColor(new Color(1f, 1f, 1f, .25f));
-				g.drawRect(squareWidth()*j+boardLeft, squareHeight()*i+boardTop, squareWidth(), squareHeight());
-				
-				Tetrominoes shape = shapeAt(j, BOARD_HEIGHT - i - 1);
-
-				if (shape != Tetrominoes.NoShape) {
-					drawSquare(g,boardLeft + j * squareWidth(), boardTop + i * squareHeight(), shape);
-				}
-			}
-		}
-
-		if (curPiece.getShape() != Tetrominoes.NoShape) {
-			for (int i = 0; i < 4; ++i) {
-				int x = curX + curPiece.x(i);
-				int y = curY - curPiece.y(i);
-				drawSquare(g,boardLeft + x * squareWidth(), boardTop + (BOARD_HEIGHT - y - 1) * squareHeight(),
-						curPiece.getShape());
-			}
-		}
-		
-		scoreStr = Integer.toString(score);
-		g.setColor(Color.BLACK);
-		g.setFont(new Font("Comic Sans MS", Font.PLAIN, 20));
-		g.drawString("Score : " + scoreStr, boardLeft + 5 + squareWidth()*10, size.height-150);
-		g.drawString("Lines : " + totalLines, boardLeft + 5 + squareWidth()*10, size.height-100);
-	}
-
+	
 	public void start() {
 		if (isPaused)
 			return;
 
 		isStarted = true;
 		isFallingFinished = false;
-//		numLinesRemoved = 0;
 		score = 0;
 		totalLines = 0;
 		clearBoard();
@@ -195,19 +68,38 @@ public class Board extends JPanel implements ActionListener {
 
 		if (isPaused) {
 			timer.stop();
-//			statusBar.setText("Paused");
+			statusBar.setText("Paused");
 		} else {
 			timer.start();
-//			statusBar.setText(String.valueOf(numLinesRemoved));
+			update(statusBar);
 		}
 
 		repaint();
 	}
+	
+	private void clearBoard() {
+		for (int i = 0; i < BOARD_HEIGHT * BOARD_WIDTH; i++) {
+			board[i] = Tetrominoes.NoShape;
+		}
+	}
+	
+	public void newPiece() {
+		curPiece.setRandomShape();
+		curX = BOARD_WIDTH / 2;
+		curY = BOARD_HEIGHT - 1 + curPiece.minY();
 
+		if (!tryMove(curPiece, curX, curY)) {
+			curPiece.setShape(Tetrominoes.NoShape);
+			timer.stop();
+			isStarted = false;
+			statusBar.setText("Game Over");
+		}
+	}
+	
 	private boolean tryMove(Shape newPiece, int newX, int newY) {
 		for (int i = 0; i < 4; ++i) {
-			int x = newX + newPiece.x(i);
-			int y = newY - newPiece.y(i);
+			int x = newX + newPiece.getX(i);
+			int y = newY - newPiece.getY(i);
 
 			if (x < 0 || x >= BOARD_WIDTH || y < 0 || y >= BOARD_HEIGHT)
 				return false;
@@ -222,6 +114,86 @@ public class Board extends JPanel implements ActionListener {
 		repaint();
 
 		return true;
+	}
+
+	@Override
+	public void paint(Graphics g) {
+		super.paint(g);
+		Dimension size = getSize();
+		int boardTop = (int) size.getHeight() - BOARD_HEIGHT * squareHeight();
+
+		for (int i = 0; i < BOARD_HEIGHT; i++) {
+			for (int j = 0; j < BOARD_WIDTH; ++j) {
+				Tetrominoes shape = shapeAt(j, BOARD_HEIGHT - i - 1);
+
+				if (shape != Tetrominoes.NoShape) {
+					drawSquare(g, j * squareWidth(), boardTop + i * squareHeight(), shape);
+				}
+			}
+		}
+
+		if (curPiece.getShape() != Tetrominoes.NoShape) {
+			for (int i = 0; i < 4; ++i) {
+				int x = curX + curPiece.getX(i);
+				int y = curY - curPiece.getY(i);
+				drawSquare(g, x * squareWidth(), boardTop + (BOARD_HEIGHT - y - 1) * squareHeight(),
+						curPiece.getShape());
+			}
+		}
+	}
+	
+	private void drawSquare(Graphics g, int x, int y, Tetrominoes shape) {
+		Color color = shape.color;
+		g.setColor(color);
+		g.fillRect(x + 1, y + 1, squareWidth() - 2, squareHeight() - 2);
+		g.setColor(color.brighter());
+		g.drawLine(x, y, x, y + squareHeight() - 1); // Vertical
+		g.drawLine(x, y, x + squareWidth() - 1, y); // Horizontal
+		g.setColor(color.darker());
+		g.drawLine(x + squareWidth() - 1, y + squareHeight() - 1, x + 1, y + squareHeight() - 1); // Horizontal
+		g.drawLine(x + squareWidth() - 1, y + squareHeight() - 1, x + squareWidth() - 1, y + 1); // Vertical
+	}
+	
+	public Tetrominoes shapeAt(int x, int y) {
+		return board[y * BOARD_WIDTH + x];
+	}
+	
+	public int squareWidth() {
+		return (int) getSize().getWidth() / BOARD_WIDTH;
+	}
+
+	public int squareHeight() {
+		return (int) getSize().getHeight() / BOARD_HEIGHT;
+	}
+	
+	@Override
+	public void actionPerformed(ActionEvent ae) {
+		if (isFallingFinished) {
+			isFallingFinished = false;
+			newPiece();
+		} 
+		else {
+			oneLineDown();
+		}
+	}
+	
+	private void oneLineDown() {
+		if (!tryMove(curPiece, curX, curY - 1))
+			pieceDropped();
+	}
+
+	private void pieceDropped() {
+		for (int i = 0; i < 4; i++) {
+			int x = curX + curPiece.getX(i);
+			int y = curY - curPiece.getY(i);
+			board[y * BOARD_WIDTH + x] = curPiece.getShape();
+		}
+
+		removeFullLines();
+
+		if (!isFallingFinished) {
+			newPiece();
+		}
 	}
 
 	private void removeFullLines() {
@@ -248,11 +220,10 @@ public class Board extends JPanel implements ActionListener {
 			}
 
 			if (numFullLines > 0) {
-//				numLinesRemoved += numFullLines;
-//				statusBar.setText(String.valueOf(numLinesRemoved));
 				score += numFullLines * 200;
+				update(statusBar);
 				isFallingFinished = true;
-				curPiece.setShape(Tetrominoes.NoShape);
+//				curPiece.setShape(Tetrominoes.NoShape);
 				repaint();
 			}
 		}
@@ -269,6 +240,7 @@ public class Board extends JPanel implements ActionListener {
 			--newY;
 		}
 		score += BOARD_HEIGHT - newY;
+		update(statusBar);
 
 		pieceDropped();
 	}
@@ -310,6 +282,7 @@ public class Board extends JPanel implements ActionListener {
 				++counter;
 				if (counter == 4) {
 					++score;
+					update(statusBar);
 					counter = 0;
 				}
 				oneLineDown();

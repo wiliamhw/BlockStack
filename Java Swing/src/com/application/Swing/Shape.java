@@ -22,13 +22,20 @@ public class Shape {
 			color = c;
 		}
 	}
-
+	
 	private Tetrominoes pieceShape;
 	private int[][] coords;
 
 	public Shape() {
 		coords = new int[4][2];
 		setShape(Tetrominoes.NoShape);
+	}
+	
+	public void setRandomShape() {
+		Random r = new Random();
+		int x = Math.abs(r.nextInt()) % 7 + 1;
+		Tetrominoes[] values = Tetrominoes.values();
+		setShape(values[x]);
 	}
 
 	public void setShape(Tetrominoes shape) {
@@ -40,6 +47,10 @@ public class Shape {
 
 		pieceShape = shape;
 	}
+	
+	public Tetrominoes getShape() {
+		return pieceShape;
+	}
 
 	private void setX(int index, int x) {
 		coords[index][0] = x;
@@ -49,23 +60,12 @@ public class Shape {
 		coords[index][1] = y;
 	}
 
-	public int x(int index) {
+	public int getX(int index) {
 		return coords[index][0];
 	}
 
-	public int y(int index) {
+	public int getY(int index) {
 		return coords[index][1];
-	}
-
-	public Tetrominoes getShape() {
-		return pieceShape;
-	}
-
-	public void setRandomShape() {
-		Random r = new Random();
-		int x = Math.abs(r.nextInt()) % 7 + 1;
-		Tetrominoes[] values = Tetrominoes.values();
-		setShape(values[x]);
 	}
 
 	public int minX() {
@@ -96,8 +96,8 @@ public class Shape {
 		result.pieceShape = pieceShape;
 
 		for (int i = 0; i < 4; i++) {
-			result.setX(i, y(i));
-			result.setY(i, -x(i));
+			result.setX(i, getY(i));
+			result.setY(i, -getX(i));
 		}
 
 		return result;
@@ -111,8 +111,8 @@ public class Shape {
 		result.pieceShape = pieceShape;
 
 		for (int i = 0; i < 4; i++) {
-			result.setX(i, -y(i));
-			result.setY(i, x(i));
+			result.setX(i, -getY(i));
+			result.setY(i, getX(i));
 		}
 
 		return result;

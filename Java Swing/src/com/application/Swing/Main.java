@@ -8,7 +8,7 @@ import java.io.IOException;
 
 public class Main {
 
-	public static final int WIDTH = 550;
+	public static final int WIDTH = 450;
 	public static final int HEIGHT = 600;
 	
 	public static void main(String[] args) {
@@ -39,7 +39,7 @@ public class Main {
 	}
 	
 	private static void initScore() {
-		File scoreFile = new File("src/score/ScoreBoard.dat");
+		File scoreFile = new File("ScoreBoard.dat");
 		Writer writeFile = null;
 		try {
 			if(scoreFile.createNewFile()) {
