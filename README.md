@@ -15,7 +15,7 @@ Membuat game tetris.
 * Kanan = geser ke kanan.  
 
 ## Kontrol (Java Swing)
-* Huruf "P" = pause / unpause.  
+* Escape = pause.  
 * Kiri = geser ke kiri.  
 * Kanan = geser ke kanan.  
 * Atas = putar ke kiri.  

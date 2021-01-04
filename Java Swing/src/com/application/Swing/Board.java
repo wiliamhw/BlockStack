@@ -1,6 +1,7 @@
 package com.application.Swing;
 
 import java.awt.Color;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -31,12 +32,16 @@ public class Board extends JPanel implements ActionListener {
 	private int curY = 0;
 	private Shape curPiece;
 	private ImageIcon icon = new ImageIcon("src/images/null.png");
+	private Pause pauseDialog;
 	private Music musicObject;
 	private Tetrominoes[] board;
 	private int score;
 	private int totalLines;
 
-	public Board() {
+	public Board(JFrame frame) {
+		// pause menu
+		pauseDialog = new Pause(frame, this);
+		
 		// music
 		String filepath = "src/music/Tetris99.wav";
 		musicObject = new Music(filepath);
@@ -45,15 +50,15 @@ public class Board extends JPanel implements ActionListener {
 		curPiece = new Shape();
 		timer = new Timer(400, this); // timer for lines down
 		board = new Tetrominoes[BOARD_WIDTH * BOARD_HEIGHT];
-		clearBoard();
+
 		addKeyListener(new MyTetrisAdapter());
 		start();
 	}
 	
-	private void start() {
+	public void start() {
 		if (isPaused)
 			return;
-
+				
 		isStarted = true;
 		isFallingFinished = false;
 		score = 0;
@@ -63,7 +68,7 @@ public class Board extends JPanel implements ActionListener {
 		timer.start();
 	}
 	
-	private void pause() {
+	public void pause() {
 		if (!isStarted)
 			return;
 
@@ -72,9 +77,11 @@ public class Board extends JPanel implements ActionListener {
 		if (isPaused) {
 			timer.stop();
 			musicObject.pauseMusic();
+			pauseDialog.showDialog();
 		} else {
 			timer.start();
-			musicObject.resumeMusic();
+			musicObject.playMusic();
+			pauseDialog.hideDialog();
 		}
 
 		repaint();
@@ -99,19 +106,22 @@ public class Board extends JPanel implements ActionListener {
 			// game over
 			int input = JOptionPane.showConfirmDialog(null, "Your Score : " + score, "Game Over", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, icon);
 			if(input == 0) {
-				JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this.getParent());
-				
-				ScoreBoard scoreBoard = new ScoreBoard(getSize().width, getSize().height);
-				frame.setContentPane(scoreBoard);
-				frame.setFocusable(true);
-				scoreBoard.setScore(score);
-				frame.invalidate();
-				frame.validate();
-				frame.revalidate();
-				frame.getContentPane().requestFocus();
-				frame.getContentPane().setFocusable(true);
+				this.stopMusic();
+				gotoScoreboard();
 			}
 		}
+	}
+	
+	public void gotoScoreboard() {
+		JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this.getParent());
+		
+		ScoreBoard scoreBoard = new ScoreBoard(getSize().width, getSize().height);
+		frame.setContentPane(scoreBoard);
+		frame.setFocusable(true);
+		scoreBoard.setScore(score);
+		frame.revalidate();
+		frame.getContentPane().requestFocus();
+		frame.getContentPane().setFocusable(true);
 	}
 	
 	private boolean tryMove(Shape newPiece, int newX, int newY) {
@@ -267,7 +277,6 @@ public class Board extends JPanel implements ActionListener {
 	}
 
 	class MyTetrisAdapter extends KeyAdapter {
-		int counter = 0;
 		
 		@Override
 		public void keyPressed(KeyEvent ke) {
@@ -276,13 +285,10 @@ public class Board extends JPanel implements ActionListener {
 
 			int keyCode = ke.getKeyCode();
 
-			if (keyCode == 'p' || keyCode == 'P')
-				pause();
-
-			if (isPaused)
-				return;
-
 			switch (keyCode) {
+			case KeyEvent.VK_ESCAPE:
+				pause();
+				break;
 			case KeyEvent.VK_LEFT:
 				tryMove(curPiece, curX - 1, curY);
 				break;
@@ -300,7 +306,7 @@ public class Board extends JPanel implements ActionListener {
 				dropDown();
 				break;
 			case KeyEvent.VK_DOWN:
-				++counter;
+				++score;
 				oneLineDown();
 				break;
 			}

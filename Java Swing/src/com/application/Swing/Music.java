@@ -49,21 +49,8 @@ public class Music {
 	public void pauseMusic() {
 		try {
 			clipTimePosition = clip.getMicrosecondPosition();
+			clip.setMicrosecondPosition(clipTimePosition);
 			clip.stop();
-		}
-		catch (Exception ex) {
-			ex.printStackTrace();
-		}
-	}
-	
-	public void resumeMusic() {
-		try {
-			if (clipTimePosition != 0) {
-				clip.setMicrosecondPosition(clipTimePosition);
-				clip.start();
-			} else {
-				this.playMusic();
-			}
 		}
 		catch (Exception ex) {
 			ex.printStackTrace();
@@ -74,6 +61,7 @@ public class Music {
 		try {
 			clip.stop();
 			clipTimePosition = 0;
+			clip.setMicrosecondPosition(clipTimePosition);
 		}
 		catch (Exception ex) {
 			ex.printStackTrace();

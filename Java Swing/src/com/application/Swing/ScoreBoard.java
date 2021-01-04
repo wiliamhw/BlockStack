@@ -97,7 +97,6 @@ public class ScoreBoard extends JPanel{
 				if(flagPlay == 1) {
 					scoreList.put(score, insertName.getText());
 					writeFile();
-					System.out.println(insertName.getText());
 				}
 				JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(okay.getParent());
 				frame.setContentPane(new MainMenu(areaWidth, areaHeight));
@@ -143,7 +142,6 @@ public class ScoreBoard extends JPanel{
 			}
 			index++;
 		}
-		
 		
 		File scoreFile = new File("src/score/ScoreBoard.dat");
 		Writer writeFile = null;

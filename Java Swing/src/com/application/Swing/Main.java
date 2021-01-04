@@ -39,6 +39,7 @@ public class Main {
 				frame.setResizable(false);
 				frame.setContentPane(new MainMenu(WIDTH, HEIGHT));
 				frame.pack();
+				frame.setLocationRelativeTo(null);
 				frame.setVisible(true);
 			}
 		});
@@ -50,16 +51,16 @@ public class Main {
 		try {
 			if(scoreFile.createNewFile()) {
 				writeFile = new FileWriter(scoreFile);
-				String defaultScore = new String("Jimmy:10000\n"
-						+ "Brook:9000\n"
-						+ "Mickey:8000\n"
-						+ "Samsul:7000\n"
-						+ "Udin:6000\n"
-						+ "John:5000\n"
-						+ "Jupiter:4000\n"
-						+ "Timothy:3000\n"
-						+ "Oktovian:2000\n"
-						+ "Wiliamp:1000");
+				String defaultScore = new String("Kosimp:9000\n"
+						+ "Wiliamp:8000\n"
+						+ "Mickey:7000\n"
+						+ "Samsul:6000\n"
+						+ "Udin:5000\n"
+						+ "John:4000\n"
+						+ "Jupiter:3000\n"
+						+ "Timothy:2000\n"
+						+ "Oktovian:1000\n"
+						+ "Noob:0");
 				writeFile.write(defaultScore);
 				
 			}
