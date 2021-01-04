@@ -9,13 +9,12 @@ import java.io.IOException;
 import java.util.logging.*;
 import javax.imageio.ImageIO;
 
-public class MainMenu extends JPanel{
+public class MainMenu extends JPanel {
 
 	private BufferedImage image;
 	private int areaWidth;
 	private int areaHeight;
 	private JButton play = new JButton("Start Game");
-//	private JButton tutorial = new JButton("Tutorial");
 	private JButton score = new JButton("Score");
 	private JButton credits = new JButton("Credits");
 	private JButton exit = new JButton("Exit");
@@ -29,9 +28,9 @@ public class MainMenu extends JPanel{
 		hButton = 50;
 		this.setPreferredSize(new Dimension(areaWidth, areaHeight));
 		setLayout(null);
-//		try {
-//			image = ImageIO.read(new File("MenuLogo.png"));
-//		} catch(IOException e) { }
+		try {
+			image = ImageIO.read(new File("src/images/MenuLogo.png"));
+		} catch(IOException e) { }
 
 		play.setBounds(((areaWidth/2) - (wButton/2)), 273, wButton, hButton);
 		score.setBounds(((areaWidth/2) - (wButton/2)), 343, wButton, hButton);
@@ -39,7 +38,6 @@ public class MainMenu extends JPanel{
 		exit.setBounds(((areaWidth/2) - (wButton/2)), 483, wButton, hButton);
 		
 		this.add(play);
-//		this.add(tutorial);
 		this.add(score);
 		this.add(credits);
 		this.add(exit);
@@ -49,14 +47,12 @@ public class MainMenu extends JPanel{
 		score.addActionListener(handler);
 		credits.addActionListener(handler);
 		exit.addActionListener(handler);
-		
 	}
 	
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		System.out.println("C");
-//		g.drawImage(image, ((areaWidth/2) - image.getWidth()/2), 20, null);
+		g.drawImage(image, ((areaWidth/2) - image.getWidth()/2), 20, null);
 	}
 	
 	public class ButtonHandler implements ActionListener{
@@ -64,20 +60,25 @@ public class MainMenu extends JPanel{
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
-			if(e.getActionCommand().equals("Start Game")) {
-				//run game
+			if(e.getActionCommand().equals("Start Game")) {			
+				JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(play.getParent());
+				frame.setContentPane(new Board(frame));
+				frame.setFocusable(true);
+				frame.revalidate();
+				frame.getContentPane().requestFocus();
+				frame.getContentPane().setFocusable(true);
 			}
 				
 			else if(e.getActionCommand().equals("Score")) {
 				JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(score.getParent());
 				
 				frame.setContentPane(new ScoreBoard(areaWidth, areaHeight));
-				frame.invalidate();
-				frame.validate();
+				frame.revalidate();
 			}
 				
 			else if(e.getActionCommand().equals("Credits")) {
 				//show Credits
+				JOptionPane.showMessageDialog(null, "Kosim\nWilliam");
 			}
 			else if(e.getActionCommand().equals("Exit")) {
 				JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(exit.getParent());
@@ -85,7 +86,7 @@ public class MainMenu extends JPanel{
 						"Confirm Close", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
 				if(choose == JOptionPane.YES_OPTION) {
 					frame.dispose();
-					System.out.println("close");
+//					System.out.println("close");
 				} else {
 					frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 				}

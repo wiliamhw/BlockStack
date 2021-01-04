@@ -1,56 +1,64 @@
 package com.application.Swing;
 
 import java.awt.Color;
+import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
 import com.application.Swing.Shape.Tetrominoes;
 
 public class Board extends JPanel implements ActionListener {
 
-	private static final int BOARD_WIDTH = 12;
-	private static final int BOARD_HEIGHT = 24;
+	private static final int BOARD_WIDTH = 10;
+	private static final int BOARD_HEIGHT = 20;
 	private Timer timer;
 	private boolean isFallingFinished = false;
 	private boolean isStarted = false;
 	private boolean isPaused = false;
-	private int score;
-	private int totalLines;
 	private int curX = 0;
 	private int curY = 0;
-	private JLabel statusBar;
 	private Shape curPiece;
+	private ImageIcon icon = new ImageIcon("src/images/null.png");
+	private Pause pauseDialog;
+	private Music musicObject;
 	private Tetrominoes[] board;
+	private int score;
+	private int totalLines;
 
-	public Board(Tetris parent) {
-		setFocusable(true);
+	public Board(JFrame frame) {
+		// pause menu
+		pauseDialog = new Pause(frame, this);
+		
+		// music
+		String filepath = "src/music/Tetris99.wav";
+		musicObject = new Music(filepath);
+		musicObject.playMusic();
+		
 		curPiece = new Shape();
 		timer = new Timer(400, this); // timer for lines down
-		statusBar = parent.getStatusBar();
-		update(statusBar);
 		board = new Tetrominoes[BOARD_WIDTH * BOARD_HEIGHT];
-		clearBoard();
+
 		addKeyListener(new MyTetrisAdapter());
-	}
-	
-	private void update(JLabel statusBar) {
-		String text = "Score: " + String.valueOf(score) + "     " 
-				+ "Total lines: " + String.valueOf(totalLines);
-		statusBar.setText(text);
+		start();
 	}
 	
 	public void start() {
 		if (isPaused)
 			return;
-
+				
 		isStarted = true;
 		isFallingFinished = false;
 		score = 0;
@@ -59,7 +67,7 @@ public class Board extends JPanel implements ActionListener {
 		newPiece();
 		timer.start();
 	}
-
+	
 	public void pause() {
 		if (!isStarted)
 			return;
@@ -68,10 +76,12 @@ public class Board extends JPanel implements ActionListener {
 
 		if (isPaused) {
 			timer.stop();
-			statusBar.setText("Paused");
+			musicObject.pauseMusic();
+			pauseDialog.showDialog();
 		} else {
 			timer.start();
-			update(statusBar);
+			musicObject.playMusic();
+			pauseDialog.hideDialog();
 		}
 
 		repaint();
@@ -82,18 +92,36 @@ public class Board extends JPanel implements ActionListener {
 			board[i] = Tetrominoes.NoShape;
 		}
 	}
-	
-	public void newPiece() {
+
+	private void newPiece() {
 		curPiece.setRandomShape();
 		curX = BOARD_WIDTH / 2;
-		curY = BOARD_HEIGHT - 1 + curPiece.minY();
+		curY = BOARD_HEIGHT + curPiece.minY();
 
-		if (!tryMove(curPiece, curX, curY)) {
+		if (!tryMove(curPiece, curX, curY - 1)) {
 			curPiece.setShape(Tetrominoes.NoShape);
 			timer.stop();
 			isStarted = false;
-			statusBar.setText("Game Over");
+			
+			// game over
+			int input = JOptionPane.showConfirmDialog(null, "Your Score : " + score, "Game Over", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, icon);
+			if(input == 0) {
+				this.stopMusic();
+				gotoScoreboard();
+			}
 		}
+	}
+	
+	public void gotoScoreboard() {
+		JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this.getParent());
+		
+		ScoreBoard scoreBoard = new ScoreBoard(getSize().width, getSize().height);
+		frame.setContentPane(scoreBoard);
+		frame.setFocusable(true);
+		scoreBoard.setScore(score);
+		frame.revalidate();
+		frame.getContentPane().requestFocus();
+		frame.getContentPane().setFocusable(true);
 	}
 	
 	private boolean tryMove(Shape newPiece, int newX, int newY) {
@@ -107,7 +135,6 @@ public class Board extends JPanel implements ActionListener {
 			if (shapeAt(x, y) != Tetrominoes.NoShape)
 				return false;
 		}
-
 		curPiece = newPiece;
 		curX = newX;
 		curY = newY;
@@ -115,31 +142,41 @@ public class Board extends JPanel implements ActionListener {
 
 		return true;
 	}
-
+	
 	@Override
 	public void paint(Graphics g) {
 		super.paint(g);
 		Dimension size = getSize();
+		g.setColor(Color.BLACK);
 		int boardTop = (int) size.getHeight() - BOARD_HEIGHT * squareHeight();
-
+		int boardLeft = 85;
+		g.fillRect(boardLeft, boardTop, squareWidth() * BOARD_WIDTH, (int) size.getHeight());
+		
 		for (int i = 0; i < BOARD_HEIGHT; i++) {
 			for (int j = 0; j < BOARD_WIDTH; ++j) {
+				
+				g.setColor(new Color(1f, 1f, 1f, .25f));
+				g.drawRect(boardLeft + j*squareWidth(), boardTop + i*squareHeight(), squareWidth(), squareHeight());
+				
 				Tetrominoes shape = shapeAt(j, BOARD_HEIGHT - i - 1);
 
 				if (shape != Tetrominoes.NoShape) {
-					drawSquare(g, j * squareWidth(), boardTop + i * squareHeight(), shape);
+					drawSquare(g, boardLeft + j*squareWidth(), boardTop + i*squareHeight(), shape);
 				}
 			}
 		}
-
 		if (curPiece.getShape() != Tetrominoes.NoShape) {
 			for (int i = 0; i < 4; ++i) {
 				int x = curX + curPiece.getX(i);
 				int y = curY - curPiece.getY(i);
-				drawSquare(g, x * squareWidth(), boardTop + (BOARD_HEIGHT - y - 1) * squareHeight(),
+				drawSquare(g, boardLeft + x*squareWidth(), boardTop + (BOARD_HEIGHT - y - 1)*squareHeight(),
 						curPiece.getShape());
 			}
 		}
+		g.setColor(Color.BLACK);
+		g.setFont(new Font("Comic Sans MS", Font.PLAIN, 20));
+		g.drawString("Score : " + Integer.toString(score), boardLeft + 5 + squareWidth()*10, (int) size.getHeight() - 150);
+		g.drawString("Lines : " + Integer.toString(totalLines), boardLeft + 5 + squareWidth()*10, (int) size.getHeight() - 100);
 	}
 	
 	private void drawSquare(Graphics g, int x, int y, Tetrominoes shape) {
@@ -147,22 +184,22 @@ public class Board extends JPanel implements ActionListener {
 		g.setColor(color);
 		g.fillRect(x + 1, y + 1, squareWidth() - 2, squareHeight() - 2);
 		g.setColor(color.brighter());
-		g.drawLine(x, y, x, y + squareHeight() - 1); // Vertical
-		g.drawLine(x, y, x + squareWidth() - 1, y); // Horizontal
+		g.drawLine(x, y + squareHeight() - 1, x, y);
+		g.drawLine(x, y, x + squareWidth() - 1, y);
 		g.setColor(color.darker());
-		g.drawLine(x + squareWidth() - 1, y + squareHeight() - 1, x + 1, y + squareHeight() - 1); // Horizontal
-		g.drawLine(x + squareWidth() - 1, y + squareHeight() - 1, x + squareWidth() - 1, y + 1); // Vertical
+		g.drawLine(x + 1, y + squareHeight() - 1, x + squareWidth() - 1, y + squareHeight() - 1);
+		g.drawLine(x + squareWidth() - 1, y + squareHeight() - 1, x + squareWidth() - 1, y + 1);
 	}
 	
-	public Tetrominoes shapeAt(int x, int y) {
+	private Tetrominoes shapeAt(int x, int y) {
 		return board[y * BOARD_WIDTH + x];
 	}
 	
-	public int squareWidth() {
-		return (int) getSize().getWidth() / BOARD_WIDTH;
+	private int squareWidth() {
+		return (int)  getSize().getHeight() / BOARD_HEIGHT;
 	}
 
-	public int squareHeight() {
+	private int squareHeight() {
 		return (int) getSize().getHeight() / BOARD_HEIGHT;
 	}
 	
@@ -171,17 +208,16 @@ public class Board extends JPanel implements ActionListener {
 		if (isFallingFinished) {
 			isFallingFinished = false;
 			newPiece();
-		} 
-		else {
+		} else {
 			oneLineDown();
 		}
 	}
-	
+
 	private void oneLineDown() {
 		if (!tryMove(curPiece, curX, curY - 1))
 			pieceDropped();
 	}
-
+	
 	private void pieceDropped() {
 		for (int i = 0; i < 4; i++) {
 			int x = curX + curPiece.getX(i);
@@ -195,7 +231,7 @@ public class Board extends JPanel implements ActionListener {
 			newPiece();
 		}
 	}
-
+	
 	private void removeFullLines() {
 		int numFullLines = 0;
 
@@ -208,7 +244,6 @@ public class Board extends JPanel implements ActionListener {
 					break;
 				}
 			}
-
 			if (lineIsFull) {
 				++numFullLines;
 
@@ -218,12 +253,9 @@ public class Board extends JPanel implements ActionListener {
 					}
 				}
 			}
-
 			if (numFullLines > 0) {
-				score += numFullLines * 200;
-				update(statusBar);
+				score += 100 + 200*(numFullLines - 1);
 				isFallingFinished = true;
-//				curPiece.setShape(Tetrominoes.NoShape);
 				repaint();
 			}
 		}
@@ -232,6 +264,7 @@ public class Board extends JPanel implements ActionListener {
 
 	private void dropDown() {
 		int newY = curY;
+		int _curY = curY;
 
 		while (newY > 0) {
 			if (!tryMove(curPiece, curX, newY - 1))
@@ -239,14 +272,11 @@ public class Board extends JPanel implements ActionListener {
 
 			--newY;
 		}
-		score += BOARD_HEIGHT - newY;
-		update(statusBar);
-
+		score += 2 * (_curY - newY);
 		pieceDropped();
 	}
 
 	class MyTetrisAdapter extends KeyAdapter {
-		int counter = 0;
 		
 		@Override
 		public void keyPressed(KeyEvent ke) {
@@ -255,13 +285,10 @@ public class Board extends JPanel implements ActionListener {
 
 			int keyCode = ke.getKeyCode();
 
-			if (keyCode == 'p' || keyCode == 'P')
-				pause();
-
-			if (isPaused)
-				return;
-
 			switch (keyCode) {
+			case KeyEvent.VK_ESCAPE:
+				pause();
+				break;
 			case KeyEvent.VK_LEFT:
 				tryMove(curPiece, curX - 1, curY);
 				break;
@@ -279,17 +306,15 @@ public class Board extends JPanel implements ActionListener {
 				dropDown();
 				break;
 			case KeyEvent.VK_DOWN:
-				++counter;
-				if (counter == 4) {
-					++score;
-					update(statusBar);
-					counter = 0;
-				}
+				++score;
 				oneLineDown();
 				break;
 			}
 
 		}
 	}
-
+	
+	public void stopMusic() {
+		musicObject.stopMusic();
+	}
 }

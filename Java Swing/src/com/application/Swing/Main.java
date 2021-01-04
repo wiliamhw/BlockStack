@@ -8,7 +8,8 @@ import java.io.IOException;
 
 public class Main {
 
-	public static final int WIDTH = 450;
+	public static final int WIDTH = 550;
+
 	public static final int HEIGHT = 600;
 	
 	public static void main(String[] args) {
@@ -24,7 +25,13 @@ public class Main {
 								"Confirm Close", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
 						if(choose == JOptionPane.YES_OPTION) {
 							e.getWindow().dispose();
-							System.out.println("close");
+							
+							// check if board class is already made
+							try {
+							   Board panel = (Board) frame.getContentPane();
+							   panel.stopMusic();
+							} 
+							catch (Exception ex) {} // do nothing
 						} else {
 							frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 						}
@@ -33,27 +40,28 @@ public class Main {
 				frame.setResizable(false);
 				frame.setContentPane(new MainMenu(WIDTH, HEIGHT));
 				frame.pack();
+				frame.setLocationRelativeTo(null);
 				frame.setVisible(true);
 			}
 		});
 	}
 	
 	private static void initScore() {
-		File scoreFile = new File("ScoreBoard.dat");
+		File scoreFile = new File("src/score/ScoreBoard.dat");
 		Writer writeFile = null;
 		try {
 			if(scoreFile.createNewFile()) {
 				writeFile = new FileWriter(scoreFile);
-				String defaultScore = new String("Jimmy:10000\n"
-						+ "Brook:9000\n"
-						+ "Mickey:8000\n"
-						+ "Samsul:7000\n"
-						+ "Udin:6000\n"
-						+ "John:5000\n"
-						+ "Jupiter:4000\n"
-						+ "Timothy:3000\n"
-						+ "Oktovian:2000\n"
-						+ "Wiliamp:1000");
+				String defaultScore = new String("Kosimp:9000\n"
+						+ "Wiliamp:8000\n"
+						+ "Mickey:7000\n"
+						+ "Samsul:6000\n"
+						+ "Udin:5000\n"
+						+ "John:4000\n"
+						+ "Jupiter:3000\n"
+						+ "Timothy:2000\n"
+						+ "Oktovian:1000\n"
+						+ "Noob:0");
 				writeFile.write(defaultScore);
 				
 			}
