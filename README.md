@@ -15,32 +15,15 @@ Membuat game tetris.
 * Kanan = geser ke kanan.  
 
 ## Kontrol (Java Swing)
-<<<<<<< HEAD
-* Huruf "P" = pause / unpause.  
-* Kiri = geser ke kiri.  
-* Kanan = geser ke kanan.  
-* Atas = putar ke kiri.  
-* Huruf "Z = putar ke kanan.  
-=======
 * Escape = pause.  
 * Kiri = geser ke kiri.  
 * Kanan = geser ke kanan.  
 * Atas = putar ke kiri.  
 * Huruf "Z" = putar ke kanan.  
->>>>>>> 53270f2977d3ec254ac605de9726dff4dd764783
 * Spasi = hard drop.  
 * Bawah = soft drop.  
 
 ## Sistem Scoring
-<<<<<<< HEAD
-* n baris yang full secara konsekutif memberikan score sebanyak 100n(n + 1).  
-* Score akan bertambah 1 setiap 4 kali soft drop.  
-* Score akan bertambah sebanyak (tinggi saat itu - tinggi dasar() setiap hard drop.  
-
-# Cara Putar Lagu di Java Swing
-1. Download lagu [Tetris99](https://drive.google.com/file/d/14dCc7kttCa9iL0pGY0h-G_1Fh-rYgn0u/view?usp=sharing).
-2. Letakkan lagu `Tetriss99` ke folder 'Java Swing'.
-=======
 * n baris yang full secara konsekutif memberikan score sebanyak (100)n^2.  
 	* Un = 100 + 200(n-1).  
 	* Sn = 100n^2.  
@@ -50,7 +33,6 @@ Membuat game tetris.
 # Cara Putar Lagu di Java Swing
 1. Download lagu [Tetris99](https://drive.google.com/file/d/14dCc7kttCa9iL0pGY0h-G_1Fh-rYgn0u/view?usp=sharing).
 2. Letakkan lagu `Tetriss99` ke folder `Java Swing\src\music`.
->>>>>>> 53270f2977d3ec254ac605de9726dff4dd764783
 3. Import folder `Java Swing` di IDE.
 
 # Cara Import JavaFX
