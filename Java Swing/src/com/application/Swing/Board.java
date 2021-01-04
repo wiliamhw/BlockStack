@@ -102,11 +102,11 @@ public class Board extends JPanel implements ActionListener {
 			curPiece.setShape(Tetrominoes.NoShape);
 			timer.stop();
 			isStarted = false;
+			this.stopMusic();
 			
 			// game over
 			int input = JOptionPane.showConfirmDialog(null, "Your Score : " + score, "Game Over", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, icon);
 			if(input == 0) {
-				this.stopMusic();
 				gotoScoreboard();
 			}
 		}
