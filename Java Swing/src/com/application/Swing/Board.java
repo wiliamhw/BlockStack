@@ -1,6 +1,7 @@
 package com.application.Swing;
 
 import java.awt.Color;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
@@ -9,13 +10,23 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
+import javax.swing.UIManager;
+
 
 import com.application.Swing.Shape.Tetrominoes;
 
@@ -23,33 +34,45 @@ public class Board extends JPanel implements ActionListener {
 
 	private static final int BOARD_WIDTH = 10;
 	private static final int BOARD_HEIGHT = 20;
-	private final Timer timer;
+	private Timer timer;
 	private boolean isFallingFinished = false;
 	private boolean isStarted = false;
 	private boolean isPaused = false;
 	private int curX = 0;
 	private int curY = 0;
 	private Shape curPiece;
-	private final ImageIcon icon = new ImageIcon("src/images/null.png");
-	private final Pause pauseDialog;
-	private final Music musicObject;
-	private final Tetrominoes[] board;
+//	private Shape nextPiece;
+//	private Shape holdPiece;
+	private ImageIcon icon = new ImageIcon("src/images/null.png");
+	private Pause pauseDialog;
+	private Music musicObject;
+	private Tetrominoes[] board;
 	private int score;
 	private int totalLines;
+	public JButton pauseButton = new JButton("Pause");
+//	private int startFlag = 1;
 
 	public Board(JFrame frame) {
+		setLayout(null);
 		// pause menu
 		pauseDialog = new Pause(frame, this);
 		
 		// music
 		String filepath = "src/music/Tetris99.wav";
 		musicObject = new Music(filepath);
-		musicObject.playMusic();
+//		musicObject.playMusic();
 		
 		// board
 		curPiece = new Shape();
+//		nextPiece = new Shape();
+//		holdPiece = new Shape();
 		timer = new Timer(400, this); // timer for lines down
 		board = new Tetrominoes[BOARD_WIDTH * BOARD_HEIGHT];
+		
+		// pause Button
+		pauseButton.setBounds(650, 560, 100, 40);
+		setPauseAction(pauseButton);
+		this.add(pauseButton);
 		
 		addKeyListener(new MyTetrisAdapter());
 		start();
@@ -76,11 +99,11 @@ public class Board extends JPanel implements ActionListener {
 
 		if (isPaused) {
 			timer.stop();
-			musicObject.pauseMusic();
+//			musicObject.pauseMusic();
 			pauseDialog.showDialog();
 		} else {
 			timer.start();
-			musicObject.playMusic();
+//			musicObject.playMusic();
 			pauseDialog.hideDialog();
 		}
 
@@ -95,6 +118,7 @@ public class Board extends JPanel implements ActionListener {
 
 	private void newPiece() {
 		curPiece.setRandomShape();
+		
 		curX = BOARD_WIDTH / 2;
 		curY = BOARD_HEIGHT + curPiece.minY();
 
@@ -149,10 +173,10 @@ public class Board extends JPanel implements ActionListener {
 		try {
 			g.drawImage(Main.background, 0, 0, null);
 		} catch (Exception e) {
-			System.out.println("Can't draw background.");
+			System.out.println(e);
 		}
 		Dimension size = getSize();
-		g.setColor(Color.BLACK);
+		g.setColor(Color.DARK_GRAY);
 		int boardTop = (int) size.getHeight() - BOARD_HEIGHT * squareHeight();
 		int boardLeft = (Main.WIDTH - BOARD_WIDTH * squareWidth())/2;
 		g.fillRect(boardLeft, boardTop, squareWidth() * BOARD_WIDTH, (int) size.getHeight());
@@ -160,9 +184,11 @@ public class Board extends JPanel implements ActionListener {
 		for (int i = 0; i < BOARD_HEIGHT; i++) {
 			for (int j = 0; j < BOARD_WIDTH; ++j) {
 				
+				// Grid
 				g.setColor(new Color(1f, 1f, 1f, .25f));
 				g.drawRect(boardLeft + j*squareWidth(), boardTop + i*squareHeight(), squareWidth(), squareHeight());
 				
+				// rendering placed shape
 				Tetrominoes shape = shapeAt(j, BOARD_HEIGHT - i - 1);
 
 				if (shape != Tetrominoes.NoShape) {
@@ -178,7 +204,20 @@ public class Board extends JPanel implements ActionListener {
 						curPiece.getShape());
 			}
 		}
+//		if(nextPiece.getShape() != Tetrominoes.NoShape) {
+//			for(int i=0; i<4; ++i) {
+//				int x = squareWidth() * nextPiece.getX(i);
+//				int y = squareHeight() * nextPiece.getY(i);
+//				drawSquare(g, 680+x, 30+y, nextPiece.getShape());
+//			}
+//		}
 		makeScoreBox(g);
+	}
+	
+	protected void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		g.setColor(new Color(0, 0, 0, 30));
+		g.fillRect(0, 0, getWidth(), getHeight());
 	}
 	
 	private void drawSquare(Graphics g, int x, int y, Tetrominoes shape) {
@@ -364,5 +403,32 @@ public class Board extends JPanel implements ActionListener {
 	
 	public void stopMusic() {
 		musicObject.stopMusic();
+	}
+	
+	public void setPauseAction(JButton button) {
+		button.addMouseListener(new MouseAdapter() {
+			public void mouseEntered(MouseEvent e) {
+				button.setBackground(new Color(244, 179, 80));
+			}
+			public void mouseClicked(MouseEvent e) {
+				pause();
+			}
+			public void mouseExited(MouseEvent e) {
+				button.setBackground(UIManager.getColor("control"));
+			}
+			public void mousePressed(MouseEvent e) {
+				button.setBackground(new Color(244, 179, 80));
+			}
+			public void mouseReleased(MouseEvent e) {
+				button.setBackground(UIManager.getColor("control"));
+			}
+		});
+		
+		button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				pauseButton.setText("Paused");
+				pause();
+			}
+		}) ;
 	}
 }
