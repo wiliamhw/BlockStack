@@ -89,11 +89,12 @@ public class MainMenu extends JPanel {
 				
 			else if(e.getActionCommand().equals("Credits")) {
 				//show Credits
-				JOptionPane.showMessageDialog(null, "Kosim\nWilliam");
+				JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(credits.getParent());
+				JOptionPane.showMessageDialog(frame, "Kosim\nWilliam");
 			}
 			else if(e.getActionCommand().equals("Exit")) {
 				JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(exit.getParent());
-				int choose = JOptionPane.showConfirmDialog(null, "Do you really want to exit the application?",
+				int choose = JOptionPane.showConfirmDialog(frame, "Do you really want to exit the application?",
 						"Confirm Close", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
 				if(choose == JOptionPane.YES_OPTION) {
 					frame.dispose();
