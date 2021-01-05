@@ -1,7 +1,6 @@
 package com.application.Swing;
 
 import java.awt.Color;
-import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
@@ -10,17 +9,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 
-import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
@@ -30,17 +23,17 @@ public class Board extends JPanel implements ActionListener {
 
 	private static final int BOARD_WIDTH = 10;
 	private static final int BOARD_HEIGHT = 20;
-	private Timer timer;
+	private final Timer timer;
 	private boolean isFallingFinished = false;
 	private boolean isStarted = false;
 	private boolean isPaused = false;
 	private int curX = 0;
 	private int curY = 0;
 	private Shape curPiece;
-	private ImageIcon icon = new ImageIcon("src/images/null.png");
-	private Pause pauseDialog;
-	private Music musicObject;
-	private Tetrominoes[] board;
+	private final ImageIcon icon = new ImageIcon("src/images/null.png");
+	private final Pause pauseDialog;
+	private final Music musicObject;
+	private final Tetrominoes[] board;
 	private int score;
 	private int totalLines;
 
@@ -51,7 +44,7 @@ public class Board extends JPanel implements ActionListener {
 		// music
 		String filepath = "src/music/Tetris99.wav";
 		musicObject = new Music(filepath);
-//		musicObject.playMusic();
+		musicObject.playMusic();
 		
 		// board
 		curPiece = new Shape();
@@ -83,11 +76,11 @@ public class Board extends JPanel implements ActionListener {
 
 		if (isPaused) {
 			timer.stop();
-//			musicObject.pauseMusic();
+			musicObject.pauseMusic();
 			pauseDialog.showDialog();
 		} else {
 			timer.start();
-//			musicObject.playMusic();
+			musicObject.playMusic();
 			pauseDialog.hideDialog();
 		}
 
@@ -156,7 +149,7 @@ public class Board extends JPanel implements ActionListener {
 		try {
 			g.drawImage(Main.background, 0, 0, null);
 		} catch (Exception e) {
-			System.out.println(e);
+			System.out.println("Can't draw background.");
 		}
 		Dimension size = getSize();
 		g.setColor(Color.BLACK);
