@@ -54,6 +54,7 @@ public class Board extends JPanel implements ActionListener {
 
 	public Board(JFrame frame) {
 		setLayout(null);
+		
 		// pause Button
 		pauseButton.setBounds(650, 560, 100, 40);
 		setPauseAction(pauseButton);
@@ -70,6 +71,7 @@ public class Board extends JPanel implements ActionListener {
 		// board
 		curPiece = new Shape();
 		nextPiece = new Shape();
+		nextPiece.setRandomShape();
 //		holdPiece = new Shape();
 		timer = new Timer(400, this); // timer for lines down
 		board = new Tetrominoes[BOARD_WIDTH * BOARD_HEIGHT];
@@ -119,7 +121,8 @@ public class Board extends JPanel implements ActionListener {
 	}
 
 	private void newPiece() {
-		curPiece.setRandomShape();
+		curPiece.setShape(nextPiece.getShape());
+		nextPiece.setRandomShape();
 		
 		curX = BOARD_WIDTH / 2;
 		curY = BOARD_HEIGHT + curPiece.minY();
