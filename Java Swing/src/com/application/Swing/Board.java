@@ -1,11 +1,8 @@
 package com.application.Swing;
 
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Stroke;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -42,7 +39,7 @@ public class Board extends JPanel implements ActionListener {
 	private final ScoreBox scorebox = new ScoreBox();
 	private final Music musicObject = new Music("src/music/Tetris99.wav");
 	private final Tetrominoes[] board = new Tetrominoes[BOARD_WIDTH * BOARD_HEIGHT];
-	private final Pause pauseDialog;
+	private final PauseMenu pauseDialog;
 	private PieceBox nextPieceBox = null;
 //	private PieceBox holdPieceBox = null;
 	private int score;
@@ -57,7 +54,7 @@ public class Board extends JPanel implements ActionListener {
 		this.add(pauseButton);
 
 		// pause menu
-		pauseDialog = new Pause(frame, this, pauseButton);
+		pauseDialog = new PauseMenu(frame, this, pauseButton);
 
 		// music
 //		musicObject.playMusic();
@@ -165,16 +162,18 @@ public class Board extends JPanel implements ActionListener {
 
 		return true;
 	}
-
+	
 	@Override
-	public void paint(Graphics g) {
-		super.paint(g);
+	protected void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		g.setColor(new Color(0, 0, 0, 30));
+		g.fillRect(0, 0, getWidth(), getHeight());
+		
 		try {
 			g.drawImage(Main.background, 0, 0, null);
 		} catch (Exception e) {
 			System.out.println(e);
 		}
-		pauseButton.repaint();
 		Dimension size = getSize();
 		g.setColor(Color.DARK_GRAY);
 		int boardTop = (int) size.getHeight() - BOARD_HEIGHT * squareHeight();
@@ -208,12 +207,7 @@ public class Board extends JPanel implements ActionListener {
 		if (nextPieceBox == null) nextPieceBox = new PieceBox(squareWidth(), squareHeight());
 		nextPieceBox.make(g, nextPiece, boardLeft + BOARD_WIDTH * squareWidth());
 		scorebox.make(g, score, totalLines);
-	}
-
-	protected void paintComponent(Graphics g) {
-		super.paintComponent(g);
-		g.setColor(new Color(0, 0, 0, 30));
-		g.fillRect(0, 0, getWidth(), getHeight());
+		pauseButton.repaint();
 	}
 
 	private void drawSquare(Graphics g, int x, int y, Tetrominoes shape) {
@@ -347,7 +341,6 @@ public class Board extends JPanel implements ActionListener {
 				oneLineDown();
 				break;
 			}
-
 		}
 	}
 

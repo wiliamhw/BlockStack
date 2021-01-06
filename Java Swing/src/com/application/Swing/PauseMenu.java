@@ -17,7 +17,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
-public class Pause extends JDialog {
+public class PauseMenu extends JDialog {
 
 	private final int areaWidth = 272;
 	private final int areaHeight = 340;
@@ -32,7 +32,7 @@ public class Pause extends JDialog {
 	private final JFrame frame;
 	private final Board board;
 
-	public Pause(JFrame owner, Board board, JButton pauseButton) {
+	public PauseMenu(JFrame owner, Board board, JButton pauseButton) {
 		super(owner, true);
 		this.frame = owner;
 		this.board = board;
@@ -95,7 +95,7 @@ public class Pause extends JDialog {
 
 			if (e.getActionCommand().equals("Resume")) {
 				try {
-					Pause dialog = (Pause) SwingUtilities.getWindowAncestor(resume.getParent());
+					PauseMenu dialog = (PauseMenu) SwingUtilities.getWindowAncestor(resume.getParent());
 					pauseButton.setText("Pause");
 
 					dialog.unpause();
