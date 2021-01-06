@@ -148,7 +148,6 @@ public class ScoreBoard extends JPanel{
 			insertName.setBounds(220, (140+index*45)-30, 120, 35);
 			this.add(insertName);
 		}
-	
 	}
 	
 	private void writeFile() {
@@ -157,12 +156,14 @@ public class ScoreBoard extends JPanel{
 		for(Map.Entry mapElement : scoreList.entrySet()) {
 			int key = (int)mapElement.getKey();
 			String value = (String)mapElement.getValue();
+			String temp = "";
 			if (value.length() >= 1) {
-				value = value.substring(0, 1).toUpperCase();
+				temp = value.substring(0, 1).toUpperCase();
 				if (value.length() != 1) {
-					value += value.substring(1, Math.min(value.length(), 8));
+					temp += value.substring(1, Math.min(value.length(), 8));
 				}
 			}
+			value = temp;
 			if(index < 9) {
 				insertToFile = insertToFile + value + ":" + Integer.toString(key)+"\n";
 			} else {

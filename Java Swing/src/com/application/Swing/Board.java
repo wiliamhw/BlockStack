@@ -41,7 +41,7 @@ public class Board extends JPanel implements ActionListener {
 	private int curX = 0;
 	private int curY = 0;
 	private Shape curPiece;
-//	private Shape nextPiece;
+	private Shape nextPiece;
 //	private Shape holdPiece;
 	private final ImageIcon icon = new ImageIcon("src/images/null.png");
 	private final JButton pauseButton = new JButton("Pause");
@@ -69,7 +69,7 @@ public class Board extends JPanel implements ActionListener {
 		
 		// board
 		curPiece = new Shape();
-//		nextPiece = new Shape();
+		nextPiece = new Shape();
 //		holdPiece = new Shape();
 		timer = new Timer(400, this); // timer for lines down
 		board = new Tetrominoes[BOARD_WIDTH * BOARD_HEIGHT];
@@ -207,13 +207,13 @@ public class Board extends JPanel implements ActionListener {
 						curPiece.getShape());
 			}
 		}
-//		if(nextPiece.getShape() != Tetrominoes.NoShape) {
-//			for(int i=0; i<4; ++i) {
-//				int x = squareWidth() * nextPiece.getX(i);
-//				int y = squareHeight() * nextPiece.getY(i);
-//				drawSquare(g, 680+x, 30+y, nextPiece.getShape());
-//			}
-//		}
+		if(nextPiece.getShape() != Tetrominoes.NoShape) {
+			for(int i=0; i<4; ++i) {
+				int x = squareWidth() * nextPiece.getX(i);
+				int y = squareHeight() * nextPiece.getY(i);
+				drawSquare(g, 680+x, 60+y, nextPiece.getShape());
+			}
+		}
 		makeScoreBox(g);
 	}
 	
