@@ -38,6 +38,7 @@ public class ScoreBoard extends JPanel{
 		okay = new JButton("Okay");
 		okay.setBounds(((areaWidth/2)-(wButton/2)), 540, wButton, hButton);
 		this.add(okay);
+		setHover(okay);
 		ButtonHandler handler = new ButtonHandler();
 		okay.addActionListener(handler);
 		score = 0;
@@ -190,5 +191,22 @@ public class ScoreBoard extends JPanel{
 					writeFile.close();
 			} catch (IOException e) {}
 		}
+	}
+	
+	private void setHover(JButton button) {
+		button.addMouseListener(new MouseAdapter() {
+			public void mouseEntered(MouseEvent e) {
+				button.setBackground(new Color(244, 179, 80));
+			}
+			public void mouseClicked(MouseEvent e) {
+				button.setBackground(new Color(244, 179, 80));
+			}
+			public void mousePressed(MouseEvent e) {
+				button.setBackground(new Color(244, 179, 80));
+			}
+			public void mouseExited(MouseEvent e) {
+				button.setBackground(UIManager.getColor("control"));
+			}
+		});
 	}
 }
