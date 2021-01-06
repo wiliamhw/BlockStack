@@ -15,12 +15,12 @@ public class MainMenu extends JPanel {
 	private BufferedImage home;
 	private int areaWidth;
 	private int areaHeight;
-	private JButton play = new JButton("Start Game");
-	private JButton score = new JButton("Score");
-	private JButton credits = new JButton("Credits");
-	private JButton exit = new JButton("Exit");
-	private int wButton;
-	private int hButton;
+	private final JButton play = new JButton("Start Game");
+	private final JButton score = new JButton("Score");
+	private final JButton credits = new JButton("Credits");
+	private final JButton exit = new JButton("Exit");
+	private final int wButton;
+	private final int hButton;
 	
 	public MainMenu(int width, int height) {
 		this.areaWidth = width;

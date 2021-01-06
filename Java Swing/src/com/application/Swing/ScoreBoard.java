@@ -12,10 +12,10 @@ public class ScoreBoard extends JPanel{
 
 	BufferedReader scoreReader;
 	TreeMap<Integer, String> scoreList;
-	private int areaWidth;
-	private int areaHeight;
-	private int wButton;
-	private int hButton;
+	private final int areaWidth;
+	private final int areaHeight;
+	private final int wButton;
+	private final int hButton;
 	private JButton okay;
 
 	private JTextField insertName = null;
@@ -53,26 +53,39 @@ public class ScoreBoard extends JPanel{
 		} catch (Exception e) {
 			System.out.println(e);
 		}
-		g.setColor(Color.ORANGE);
-		g.fillRect(190, 0, 360, 525);
-	
-		g.setColor(Color.BLACK);
-		g.setFont(new Font("Comic Sans MS", Font.BOLD, 30));
-		g.drawString("ScoreBoard", ((areaWidth/2)-87), 45);
+		int paddingTop = 60;
+		g.setColor(Color.DARK_GRAY);
+		g.fillRect(180, 50, 370, 475);
 		
-		g.setFont(new Font("Comic Sans MS", Font.PLAIN, 24));
+		// border
+		Graphics2D g2 = (Graphics2D) g;
+		Stroke oldStroke = g2.getStroke();
+		g2.setStroke(new BasicStroke(10));
+		g2.setColor(Color.LIGHT_GRAY);
+		g2.drawRect(180, 50, 370, 475);
+		g2.setStroke(oldStroke);
+	
+		g.setColor(Color.WHITE);
+		g.setFont(new Font("Tahoma", Font.BOLD, 30));
+		g.drawString("ScoreBoard", ((areaWidth/2)-87), 95);
+		
+		g.setFont(new Font("Tahoma", Font.PLAIN, 24));
 		int yAdder = 45;
-		int y = 105;
+		int y = 140;
 		
 		Set s = scoreList.entrySet();
 		Iterator i = s.iterator();
+		int paddingX = 220;
 		
 		while(i.hasNext()) {
 			Map.Entry m = (Map.Entry) i.next();
 			int key = (Integer) m.getKey();
-			String value = (String) m.getValue();
-			g.drawString(value, 210, y);
-			g.drawString(Integer.toString(key), (areaWidth/2)+90, y);
+			String name = (String) m.getValue();
+			g.drawString(name, paddingX, y);
+			
+			String strKey = Integer.toString(key);
+			int x = areaWidth - g.getFontMetrics().stringWidth(strKey) - paddingX - 21; 
+			g.drawString(strKey, x, y);
 			y += yAdder;
 		}
 	}
@@ -131,8 +144,8 @@ public class ScoreBoard extends JPanel{
 					break;
 				index++;
 			}
-			insertName.setFont(new Font("Comic Sans MS", Font.PLAIN, 24));
-			insertName.setBounds(210, (105+index*45)-30, 90, 35);
+			insertName.setFont(new Font("Tahoma", Font.PLAIN, 24));
+			insertName.setBounds(220, (140+index*45)-30, 120, 35);
 			this.add(insertName);
 		}
 	
@@ -144,10 +157,16 @@ public class ScoreBoard extends JPanel{
 		for(Map.Entry mapElement : scoreList.entrySet()) {
 			int key = (int)mapElement.getKey();
 			String value = (String)mapElement.getValue();
+			if (value.length() >= 1) {
+				value = value.substring(0, 1).toUpperCase();
+				if (value.length() != 1) {
+					value += value.substring(1, Math.min(value.length(), 8));
+				}
+			}
 			if(index < 9) {
-				insertToFile = insertToFile+ value + ":" + Integer.toString(key)+"\n";
+				insertToFile = insertToFile + value + ":" + Integer.toString(key)+"\n";
 			} else {
-				insertToFile = insertToFile+ value + ":" + Integer.toString(key);
+				insertToFile = insertToFile + value + ":" + Integer.toString(key);
 			}
 			index++;
 		}
@@ -161,9 +180,7 @@ public class ScoreBoard extends JPanel{
 				writeFile = new FileWriter(scoreFile);
 				
 				writeFile.write(insertToFile);
-				
 			}
-			
 		} catch (Exception e) {}
 		
 		finally {

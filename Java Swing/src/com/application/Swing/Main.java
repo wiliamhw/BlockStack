@@ -61,16 +61,16 @@ public class Main {
 		try {
 			if(scoreFile.createNewFile()) {
 				writeFile = new FileWriter(scoreFile);
-				String defaultScore = new String("Kosimp:9000\n"
-						+ "Wiliamp:8000\n"
-						+ "Mickey:7000\n"
-						+ "Samsul:6000\n"
+				String defaultScore = new String(
+						  "Kosimp:811000\n"
+						+ "Wiliamp:711000\n"
+						+ "Samsul:61000\n"
 						+ "Udin:5000\n"
 						+ "John:4000\n"
 						+ "Jupiter:3000\n"
 						+ "Timothy:2000\n"
 						+ "Oktovian:1000\n"
-						+ "Noob:0");
+						+ "Noob:0\n");
 				writeFile.write(defaultScore);
 				
 			}

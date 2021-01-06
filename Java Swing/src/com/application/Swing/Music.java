@@ -9,7 +9,7 @@ import javax.sound.sampled.Clip;
 
 public class Music {
 	
-	private String musicLocation;
+	private final String musicLocation;
 	private File musicPath;
 	private Clip clip;
 	private long clipTimePosition;

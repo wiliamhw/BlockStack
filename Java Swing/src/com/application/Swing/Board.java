@@ -131,7 +131,7 @@ public class Board extends JPanel implements ActionListener {
 			this.stopMusic();
 			
 			// game over
-			int input = JOptionPane.showConfirmDialog(null, "Your Score : " + score, "Game Over", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, icon);
+			int input = JOptionPane.showConfirmDialog(this, "Your Score : " + score, "Game Over", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, icon);
 			if(input == 0) {
 				gotoScoreboard();
 			}

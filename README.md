@@ -24,6 +24,10 @@ Membuat game tetris.
 * Score akan bertambah 1 setiap soft drop.  
 * Score akan bertambah sebanyak (2 * jarak ketinggian) setiap hard drop.  
 
+## Info Tambahan
+* Nama pada scoreboard hanya bisa menampung 8 karakter.
+* Nama pada scoreboard selalu diawali dengan huruf kapital.
+
 # Cara Download Assets
 1. Download assets [Tetris99](https://drive.google.com/file/d/1Suljo33B7DQ7TWR-V7rHMfZzUMnTDup-/view?usp=sharing).
 2. Ekstrak file assets.
