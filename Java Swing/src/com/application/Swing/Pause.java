@@ -18,44 +18,43 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
-public class Pause extends JDialog{
+public class Pause extends JDialog {
 
-	private int areaWidth = 272;
-	private int areaHeight = 320;
-	private JButton resume = new JButton("Resume");
-	private JButton restart = new JButton("Restart");
-	private JButton quit = new JButton("Main Menu");
-	private JFrame frame;
-	private Board board;
-	private int wButton;
-	private int hButton;
-	private JTextField pauseHeader;
+	private final int areaWidth = 272;
+	private final int areaHeight = 340;
+	private final int border = 10;
+	private final int wButton = 100;
+	private final int hButton = 50;
+	private final JButton resume = new JButton("Resume");
+	private final JButton restart = new JButton("Restart");
+	private final JButton quit = new JButton("Main Menu");
+	private final JTextField pauseHeader = new JTextField("Paused");
+	private final JButton pauseButton;
+	private final JFrame frame;
+	private final Board board;
 
-	public Pause(JFrame owner, Board board) {
+	public Pause(JFrame owner, Board board, JButton pauseButton) {
 		super(owner, true);
 		this.frame = owner;
 		this.board = board;
-		wButton = 100;
-		hButton = 50;
+		this.pauseButton = pauseButton;
 		this.setPreferredSize(new Dimension(areaWidth, areaHeight));
 		this.setLayout(null);
 		this.setUndecorated(true);
 		this.getContentPane().setBackground(Color.DARK_GRAY);
 		getRootPane().setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 10));
 
-		resume.setBounds(((areaWidth/2)-(wButton/2)), 80, wButton, hButton);
-		restart.setBounds(((areaWidth/2)-(wButton/2)), 160, wButton, hButton);
-		quit.setBounds(((areaWidth/2)-(wButton/2)), 240, wButton, hButton);
+		resume.setBounds((areaWidth-wButton - border)/2, 80, wButton, hButton);
+		restart.setBounds((areaWidth-wButton - border)/2, 160, wButton, hButton);
+		quit.setBounds((areaWidth-wButton - border)/2, 240, wButton, hButton);
 		
-		pauseHeader = new JTextField();
 		pauseHeader.setBackground(Color.DARK_GRAY);
 		pauseHeader.setBorder(null);
-		pauseHeader.setFont(new Font("Comic Sans MS", Font.BOLD, 30));
-		pauseHeader.setText("Paused");
+		pauseHeader.setFont(new Font("Tahoma", Font.BOLD, 30));
 		pauseHeader.setHorizontalAlignment(JTextField.CENTER);
 		pauseHeader.setEditable(false);
 		pauseHeader.setForeground(Color.WHITE);
-		pauseHeader.setBounds(0, 10, areaWidth, 40);
+		pauseHeader.setBounds(-border/2, border, areaWidth, hButton - border);
 
 		this.add(resume);
 		this.add(restart);
@@ -75,7 +74,7 @@ public class Pause extends JDialog{
 	public void showDialog() {
 		this.pack();
 		this.setLocationRelativeTo(this.board);
-		board.pauseButton.setBackground(UIManager.getColor("control"));
+//		pauseButton.setBackground(UIManager.getColor("control"));
 		board.setEnabled(false);
 		this.setVisible(true);
 	}
@@ -98,7 +97,7 @@ public class Pause extends JDialog{
 			if (e.getActionCommand().equals("Resume")) {
 				try {
 					Pause dialog = (Pause) SwingUtilities.getWindowAncestor(resume.getParent());
-					board.pauseButton.setText("Pause");
+					pauseButton.setText("Pause");
 					
 					dialog.unpause();
 				}

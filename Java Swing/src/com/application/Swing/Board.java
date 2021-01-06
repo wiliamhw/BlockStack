@@ -34,7 +34,7 @@ public class Board extends JPanel implements ActionListener {
 
 	private static final int BOARD_WIDTH = 10;
 	private static final int BOARD_HEIGHT = 20;
-	private Timer timer;
+	private final Timer timer;
 	private boolean isFallingFinished = false;
 	private boolean isStarted = false;
 	private boolean isPaused = false;
@@ -43,19 +43,24 @@ public class Board extends JPanel implements ActionListener {
 	private Shape curPiece;
 //	private Shape nextPiece;
 //	private Shape holdPiece;
-	private ImageIcon icon = new ImageIcon("src/images/null.png");
-	private Pause pauseDialog;
-	private Music musicObject;
-	private Tetrominoes[] board;
+	private final ImageIcon icon = new ImageIcon("src/images/null.png");
+	private final JButton pauseButton = new JButton("Pause");
+	private final Pause pauseDialog;
+	private final Music musicObject;
+	private final Tetrominoes[] board;
 	private int score;
 	private int totalLines;
-	public JButton pauseButton = new JButton("Pause");
 //	private int startFlag = 1;
 
 	public Board(JFrame frame) {
 		setLayout(null);
+		// pause Button
+		pauseButton.setBounds(650, 560, 100, 40);
+		setPauseAction(pauseButton);
+		this.add(pauseButton);
+		
 		// pause menu
-		pauseDialog = new Pause(frame, this);
+		pauseDialog = new Pause(frame, this, pauseButton);
 		
 		// music
 		String filepath = "src/music/Tetris99.wav";
@@ -68,11 +73,6 @@ public class Board extends JPanel implements ActionListener {
 //		holdPiece = new Shape();
 		timer = new Timer(400, this); // timer for lines down
 		board = new Tetrominoes[BOARD_WIDTH * BOARD_HEIGHT];
-		
-		// pause Button
-		pauseButton.setBounds(650, 560, 100, 40);
-		setPauseAction(pauseButton);
-		this.add(pauseButton);
 		
 		addKeyListener(new MyTetrisAdapter());
 		start();
@@ -100,10 +100,12 @@ public class Board extends JPanel implements ActionListener {
 		if (isPaused) {
 			timer.stop();
 //			musicObject.pauseMusic();
+			pauseButton.setVisible(false);
 			pauseDialog.showDialog();
 		} else {
 			timer.start();
 //			musicObject.playMusic();
+			pauseButton.setVisible(true);
 			pauseDialog.hideDialog();
 		}
 
@@ -175,6 +177,7 @@ public class Board extends JPanel implements ActionListener {
 		} catch (Exception e) {
 			System.out.println(e);
 		}
+		pauseButton.repaint();
 		Dimension size = getSize();
 		g.setColor(Color.DARK_GRAY);
 		int boardTop = (int) size.getHeight() - BOARD_HEIGHT * squareHeight();
@@ -426,7 +429,6 @@ public class Board extends JPanel implements ActionListener {
 		
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				pauseButton.setText("Paused");
 				pause();
 			}
 		}) ;
