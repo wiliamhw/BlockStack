@@ -22,7 +22,7 @@ public class Shape {
 			color = c;
 		}
 	}
-	
+
 	private Tetrominoes pieceShape;
 	private int[][] coords;
 
@@ -30,7 +30,7 @@ public class Shape {
 		coords = new int[4][2];
 		setShape(Tetrominoes.NoShape);
 	}
-	
+
 	public void setRandomShape() {
 		Random r = new Random();
 		int x = Math.abs(r.nextInt()) % 7 + 1;
@@ -47,7 +47,7 @@ public class Shape {
 
 		pieceShape = shape;
 	}
-	
+
 	public Tetrominoes getShape() {
 		return pieceShape;
 	}
