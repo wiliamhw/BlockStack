@@ -8,14 +8,14 @@ Membuat game tetris.
 * William Handi Wijaya 05111940000087
 * Stefanus Albert Kosim 05111940000096  
 
-## Kontrol (Java Swing)
-* Escape 	= pause.  
-* Kiri 		= geser ke kiri.  
-* Kanan 	= geser ke kanan.  
-* Atas 		= putar ke kanan.  
+## Kontrol
+* Escape = pause.  
+* Kiri = geser ke kiri.  
+* Kanan = geser ke kanan.  
+* Atas = putar ke kanan.  
 * Huruf "Z" = putar ke kiri.  
-* Spasi 	= hard drop.  
-* Bawah 	= soft drop.  
+* Spasi = hard drop.  
+* Bawah = soft drop.  
 * Huruf "C" = hold.  
 
 ## Sistem Scoring
