@@ -1,7 +1,9 @@
-# Tugas FP PBO
+# Final Project PBO
 Membuat game tetris.  
+\
 ![Main menu preivew](Mainmenu-Preview.jpg?raw=true)  
-![Ingame preivew](Ingame-Preview.jpg?raw=true)  
+\
+![Ingame preivew](Ingame-Preview.jpg?raw=true)
 
 # Tim
 #### Nama Kelompok: KamiSama
@@ -30,9 +32,10 @@ Membuat game tetris.
 ## Info Tambahan
 * Nama pada scoreboard hanya bisa menampung 8 karakter.
 * Nama pada scoreboard selalu diawali dengan huruf kapital.
+* Asset audio diambil dari game Tetris99 di Nintendo Switch.
 
 # Cara Download Assets
-1. Download assets [Tetris99](https://drive.google.com/file/d/1Suljo33B7DQ7TWR-V7rHMfZzUMnTDup-/view?usp=sharing).
+1. Download [assets](https://drive.google.com/file/d/1Suljo33B7DQ7TWR-V7rHMfZzUMnTDup-/view?usp=sharing).
 2. Ekstrak file assets.
 3. Copy file music dan images dari file assets ke folder `Java Swing\src`.
-3. Import/refresh folder `Java Swing` di IDE.
+4. Import/refresh folder `Java Swing` di IDE.
