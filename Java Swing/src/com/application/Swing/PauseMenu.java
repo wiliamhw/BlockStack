@@ -9,6 +9,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -17,6 +18,8 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
+import com.application.Swing.Pause.ButtonHandler;
+
 public class PauseMenu extends JDialog {
 
 	private final int areaWidth = 272;
@@ -24,13 +27,16 @@ public class PauseMenu extends JDialog {
 	private final int border = 10;
 	private final int wButton = 100;
 	private final int hButton = 50;
-	private final JButton resume = new JButton("Resume");
-	private final JButton restart = new JButton("Restart");
-	private final JButton quit = new JButton("Main Menu");
+	private JButton resume;
+	private JButton restart;
+	private JButton quit;
 	private final JTextField pauseHeader = new JTextField("Paused");
 	private final JButton pauseButton;
 	private final JFrame frame;
 	private final Board board;
+	private ImageIcon iconResume = null;
+	private ImageIcon iconRestart = null;
+	private ImageIcon iconMenu = null;
 
 	public PauseMenu(JFrame owner, Board board, JButton pauseButton) {
 		super(owner, true);
@@ -43,9 +49,16 @@ public class PauseMenu extends JDialog {
 		this.getContentPane().setBackground(Color.DARK_GRAY);
 		getRootPane().setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 10));
 
-		resume.setBounds((areaWidth - wButton - border) / 2, 80, wButton, hButton);
-		restart.setBounds((areaWidth - wButton - border) / 2, 160, wButton, hButton);
-		quit.setBounds((areaWidth - wButton - border) / 2, 240, wButton, hButton);
+		
+		try {
+			iconResume = new ImageIcon("src/images/ResumeButton.png");
+			iconRestart = new ImageIcon("src/images/RestartButton.png");
+			iconMenu = new ImageIcon("src/images/MainMenuButton.png");
+		} catch(Exception e) {
+			System.out.println(e);
+		}
+		
+		setButton();
 
 		pauseHeader.setBackground(Color.DARK_GRAY);
 		pauseHeader.setBorder(null);
@@ -55,19 +68,8 @@ public class PauseMenu extends JDialog {
 		pauseHeader.setForeground(Color.WHITE);
 		pauseHeader.setBounds(-border / 2, border, areaWidth, hButton - border);
 
-		this.add(resume);
-		this.add(restart);
-		this.add(quit);
 		this.add(pauseHeader);
 
-		ButtonHandler handler1 = new ButtonHandler();
-		resume.addActionListener(handler1);
-		restart.addActionListener(handler1);
-		quit.addActionListener(handler1);
-
-		setHover(resume);
-		setHover(restart);
-		setHover(quit);
 	}
 
 	public void showDialog() {
@@ -93,22 +95,21 @@ public class PauseMenu extends JDialog {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 //			Main.sfx.ok.playbackMusic();
-			if (e.getActionCommand().equals("Resume")) {
+			if (e.getActionCommand().equals("Resume") || e.getActionCommand().equals("")) {
 				try {
 					PauseMenu dialog = (PauseMenu) SwingUtilities.getWindowAncestor(resume.getParent());
-					pauseButton.setText("Pause");
 
 					dialog.unpause();
 				} catch (Exception ex) {
 					System.out.println(ex);
 				}
-			} else if (e.getActionCommand().equals("Restart")) {
+			} else if (e.getActionCommand().equals("Restart") || e.getActionCommand().equals(" ")) {
 				board.stopMusic();
 				unpause();
 				board.start();
 				board.repaint();
 
-			} else if (e.getActionCommand().equals("Main Menu")) {
+			} else if (e.getActionCommand().equals("Main Menu") || e.getActionCommand().equals("  ")) {
 				int choose = JOptionPane.showConfirmDialog(frame, "Do you really want to go back to main menu?",
 						"Confirm Back", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
 				if (choose == JOptionPane.YES_OPTION) {
@@ -124,20 +125,51 @@ public class PauseMenu extends JDialog {
 		button.addMouseListener(new MouseAdapter() {
 			public void mouseEntered(MouseEvent e) {
 //				Main.sfx.cursor.playbackMusic();
-				button.setBackground(new Color(244, 179, 80));
+				button.setBorder(BorderFactory.createLineBorder(Color.GREEN, 5));
 			}
-
-			public void mouseClicked(MouseEvent e) {
-				button.setBackground(new Color(244, 179, 80));
-			}
-
-			public void mousePressed(MouseEvent e) {
-				button.setBackground(new Color(244, 179, 80));
-			}
-
 			public void mouseExited(MouseEvent e) {
-				button.setBackground(UIManager.getColor("control"));
+				button.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 5));
 			}
 		});
+	}
+	
+	private void setButton() {
+		ButtonHandler handler1 = new ButtonHandler();
+		
+		if(iconMenu == null || iconRestart == null || iconResume == null) {
+			resume = new JButton("Resume");
+			restart = new JButton("Restart");
+			quit = new JButton("Main Menu");			
+		}
+		else {
+			resume = new JButton("", iconResume);
+			restart = new JButton(" ", iconRestart);
+			quit = new JButton("  ", iconMenu);
+		}
+		
+		resume.setHorizontalTextPosition(JButton.CENTER);
+		restart.setHorizontalTextPosition(JButton.CENTER);
+		quit.setHorizontalTextPosition(JButton.CENTER);
+		
+		resume.setBounds((areaWidth - wButton - border) / 2, 80, wButton, hButton);
+		restart.setBounds((areaWidth - wButton - border) / 2, 160, wButton, hButton);
+		quit.setBounds((areaWidth - wButton - border) / 2, 240, wButton, hButton);
+		
+		resume.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 5));
+		restart.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 5));
+		quit.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 5));
+		
+		resume.addActionListener(handler1);
+		restart.addActionListener(handler1);
+		quit.addActionListener(handler1);
+		
+		setHover(resume);
+		setHover(restart);
+		setHover(quit);
+		
+		this.add(resume);
+		this.add(restart);
+		this.add(quit);
+		this.add(pauseHeader);
 	}
 }

@@ -10,6 +10,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -35,7 +36,7 @@ public class Board extends JPanel implements ActionListener {
 	private Shape nextPiece;
 	private Shape holdPiece;
 	private final ImageIcon icon = new ImageIcon("src/images/null.png");
-	private final JButton pauseButton = new JButton("Pause");
+	protected JButton pauseButton;
 	private final ScoreBox scorebox = new ScoreBox();
 	private final Tetrominoes[] board = new Tetrominoes[BOARD_WIDTH * BOARD_HEIGHT];
 	private final PauseMenu pauseDialog;
@@ -44,14 +45,19 @@ public class Board extends JPanel implements ActionListener {
 	private boolean isHold; // flag for checking if a block have been hold in this turn
 	private int score;
 	private int totalLines;
+	private ImageIcon iconPause = null;
+		
 
 	public Board(JFrame frame) {
 		setLayout(null);
 
 		// pause Button
-		pauseButton.setBounds(650, 560, 100, 40);
-		setPauseAction(pauseButton);
-		this.add(pauseButton);
+		try {
+			iconPause = new ImageIcon("src/images/PauseButton.png");
+		} catch(Exception e) {
+			System.out.println(e);
+		}
+		setPauseButton();
 
 		// pause menu
 		pauseDialog = new PauseMenu(frame, this, pauseButton);
@@ -99,6 +105,12 @@ public class Board extends JPanel implements ActionListener {
 		} else {
 			timer.start();
 			Main.sfx.ingame.playMusic(true);
+			if(iconPause != null) {
+				pauseButton.setIcon(iconPause);
+				pauseButton.setText("");						
+			} else {
+				pauseButton.setText("Pause");
+			}
 			pauseButton.setVisible(true);
 			pauseDialog.hideDialog();
 		}
@@ -406,7 +418,7 @@ public class Board extends JPanel implements ActionListener {
 	public void setPauseAction(JButton button) {
 		button.addMouseListener(new MouseAdapter() {
 			public void mouseEntered(MouseEvent e) {
-				button.setBackground(new Color(244, 179, 80));
+				button.setBorder(BorderFactory.createLineBorder(Color.GREEN, 5));
 			}
 
 			public void mouseClicked(MouseEvent e) {
@@ -415,15 +427,7 @@ public class Board extends JPanel implements ActionListener {
 			}
 
 			public void mouseExited(MouseEvent e) {
-				button.setBackground(UIManager.getColor("control"));
-			}
-
-			public void mousePressed(MouseEvent e) {
-				button.setBackground(new Color(244, 179, 80));
-			}
-
-			public void mouseReleased(MouseEvent e) {
-				button.setBackground(UIManager.getColor("control"));
+				button.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 5));
 			}
 		});
 
@@ -433,5 +437,19 @@ public class Board extends JPanel implements ActionListener {
 				pause();
 			}
 		});
+	}
+	
+	private void setPauseButton() {
+		if(iconPause == null) {
+			pauseButton = new JButton("Pause");
+		}
+		else {
+			pauseButton = new JButton("", iconPause);
+		}
+		pauseButton.setHorizontalTextPosition(JButton.CENTER);
+		pauseButton.setBounds(640, 550, 110, 50);
+		pauseButton.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 5));
+		setPauseAction(pauseButton);
+		this.add(pauseButton);
 	}
 }

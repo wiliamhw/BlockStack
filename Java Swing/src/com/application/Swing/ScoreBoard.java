@@ -23,26 +23,28 @@ public class ScoreBoard extends JPanel{
 	private int smallestScore;
 	private String insertToFile;
 	private int flagPlay = 0;
+	private ImageIcon iconOkay = null;
 	
 	public ScoreBoard(int width, int height) {
+		try {
+			iconOkay = new ImageIcon("src/images/OkayButton.png");
+		} catch(Exception e) {
+			System.out.println(e);
+		}
+		
 		this.areaWidth = width;
 		this.areaHeight = height;
-		wButton = 100;
-		hButton = 50;
+		wButton = 110;
+		hButton = 60;
 		flagPlay = 0;
 		setLayout(null);
 		scoreList = new TreeMap<Integer, String>(Collections.reverseOrder());
 		insertName = new JTextField();
 		insertName.setColumns(50);
 		insertName.setFocusable(true);
-		okay = new JButton("Okay");
-		okay.setBounds(((areaWidth/2)-(wButton/2)), 540, wButton, hButton);
-		this.add(okay);
-		setHover(okay);
-		ButtonHandler handler = new ButtonHandler();
-		okay.addActionListener(handler);
 		score = 0;
 		readFile();
+		setButton();
 		this.setVisible(true);
 	}
 	
@@ -116,7 +118,7 @@ public class ScoreBoard extends JPanel{
 	public class ButtonHandler implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			if(e.getActionCommand().equals("Okay")) {
+			if(e.getActionCommand().equals("Okay") || e.getActionCommand().equals("")) {
 				if(flagPlay == 1) {
 					scoreList.put(score, insertName.getText());
 					writeFile();
@@ -196,17 +198,29 @@ public class ScoreBoard extends JPanel{
 	private void setHover(JButton button) {
 		button.addMouseListener(new MouseAdapter() {
 			public void mouseEntered(MouseEvent e) {
-				button.setBackground(new Color(244, 179, 80));
-			}
-			public void mouseClicked(MouseEvent e) {
-				button.setBackground(new Color(244, 179, 80));
-			}
-			public void mousePressed(MouseEvent e) {
-				button.setBackground(new Color(244, 179, 80));
+				button.setBorder(BorderFactory.createLineBorder(Color.GREEN, 5));
 			}
 			public void mouseExited(MouseEvent e) {
-				button.setBackground(UIManager.getColor("control"));
+				button.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 5));
 			}
 		});
+	}
+	
+	private void setButton() {
+		ButtonHandler handler = new ButtonHandler();
+		
+		if(iconOkay == null) {
+			okay = new JButton("Okay");			
+		}
+		else {
+			okay = new JButton("", iconOkay);
+		}
+		
+		okay.setHorizontalTextPosition(JButton.CENTER);
+		okay.setBounds(((areaWidth/2)-(wButton/2)), 535, wButton, hButton);
+		okay.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 5));
+		okay.addActionListener(handler);
+		setHover(okay);
+		this.add(okay);
 	}
 }
