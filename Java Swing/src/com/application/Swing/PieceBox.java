@@ -2,6 +2,8 @@ package com.application.Swing;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Stroke;
@@ -17,7 +19,6 @@ public class PieceBox {
 	private int y;
 	private final int padder;
 	private final int margin;
-	private Graphics g;
 	private Shape piece;
 	
 	public PieceBox(int squareWidth, int squareHeight) {
@@ -27,54 +28,88 @@ public class PieceBox {
 		this.margin = 50;
 	}
 	
-	public void make(Graphics g, Shape piece, int leftBorder) {
+	public void make(Graphics g, Shape piece, int leftBorder, String title) {
 		this.piece = piece;
 		this.width = 4 * squareWidth;
 		this.height = this.width;
 		this.x = leftBorder + margin;
 		this.y = margin;
+		int titleBarHeight = 3 * squareHeight / 2;
+		int temp[] = new int[2];
 		
+		// box
 		g.setColor(Color.DARK_GRAY);
-		g.fillRect(x, y, width, height);
+		g.fillRect(x, y, width, titleBarHeight);
+		g.setColor(Color.BLACK);
+		g.fillRect(x, y + titleBarHeight, width, height);
+		g.setColor(Color.WHITE);
 
 		// border
 		Graphics2D g2 = (Graphics2D) g;
 		Stroke oldStroke = g2.getStroke();
 		g2.setStroke(new BasicStroke(10));
 		g2.setColor(Color.LIGHT_GRAY);
-		g2.drawRect(x - padder, y - padder, width + 2 * padder, height + 2 * padder);
+		g2.drawRect(x - padder, y - padder, width + 2 * padder, height + 2 * padder + titleBarHeight);
 		g2.setStroke(oldStroke);
 		
-		int temp[] = new int[2];
-		if (piece.getShape() != Tetrominoes.SquareShape && piece.getShape() != Tetrominoes.LineShape) {
-			if (!canMove(piece, width, height, x - squareWidth, y)) {
-				temp[0] = squareWidth / 2;
-			}
-			if (!canMove(piece, width, height, x, y - squareHeight)) {
-				temp[1] = squareHeight / 2;
-			}
-		}
-		x += temp[0] + width / 4;
-		y += temp[1] + height / 4;
+		// title
+		g.setColor(Color.WHITE);
+		g.setFont(new Font("Tahoma", Font.BOLD, 18));
+		FontMetrics font = g.getFontMetrics();
+		temp[0] = x + (width - font.stringWidth(title))/2;
+		temp[1] = y + (titleBarHeight + font.getHeight() - padder)/2;
+		g.drawString(title, temp[0], temp[1]);
+		
+		// piece
+		temp = centerPadding(titleBarHeight);
 
-		if (piece.getShape() != Tetrominoes.NoShape) {
+		if (this.piece.getShape() != Tetrominoes.NoShape) {
 			for (int i = 0; i < 4; ++i) {
-				int q_x = squareWidth * piece.getX(i);
-				int q_y = squareHeight * piece.getY(i);
-				drawSquare(g, x + q_x, y + q_y, piece.getShape());
+				int q_x = squareWidth * this.piece.getX(i);
+				int q_y = squareHeight * this.piece.getY(i);
+				drawSquare(g, temp[0] + q_x, temp[1] + q_y, this.piece.getShape());
 			}
 		}
 	}
-	
-	private boolean canMove(Shape currpiece, int width, int height, int newX, int newY) {
-		for (int i = 0; i < 4; ++i) {
-			int x = newX + currpiece.getX(i);
-			int y = newY - currpiece.getY(i);
 
-			if (x < 0 || x >= width || y < 0 || y >= height)
-				return false;
+	private int[] centerPadding(int titleBarHeight) {
+		int temp[] = new int[2];
+		if (this.piece.getShape() == Tetrominoes.NoShape) return temp;
+		
+		int pMin[] = {this.piece.getX(0), this.piece.getY(0)};
+		int pMax[] = {this.piece.getX(0), this.piece.getY(0)};
+		if (this.piece.getShape() != Tetrominoes.NoShape) {
+			for (int i = 1; i < 4; ++i) {
+				pMin[0] = Math.min(this.piece.getX(i), pMin[0]);
+				pMin[1] = Math.min(this.piece.getY(i), pMin[1]);
+				pMax[0] = Math.max(this.piece.getX(i), pMax[0]);
+				pMax[1] = Math.max(this.piece.getY(i), pMax[1]);
+			}
 		}
-		return true;
+		int pWidth = squareWidth * (pMax[0] - pMin[0] + 1);
+		int pHeight = squareWidth * (pMax[1] - pMin[1] - 1);
+		
+		temp[0] = x;
+		temp[1] = y + titleBarHeight;
+		if (this.piece.getShape() == Tetrominoes.LineShape) {
+			temp[0] += (this.width - pWidth)/2;
+			temp[1] += this.height / 4;
+		} else if (this.piece.getShape() == Tetrominoes.TShape) {
+			temp[0] += this.width / 2 - squareWidth/2;
+			temp[1] += this.height / 4;
+		} else if (this.piece.getShape() == Tetrominoes.ZShape ||
+					this.piece.getShape() == Tetrominoes.LShape) {
+			temp[0] += this.width / 2;
+			temp[1] += this.height / 2 - squareHeight/2;
+		}  else if (this.piece.getShape() == Tetrominoes.SquareShape) {
+			temp[0] += this.width / 4;
+			temp[1] += this.height / 4;
+		} else {
+			temp[0] += (this.width - pWidth)/2;
+			temp[1] += (this.height - pHeight)/2;
+		}
+		
+		return temp;
 	}
 
 	private void drawSquare(Graphics g, int x, int y, Tetrominoes shape) {

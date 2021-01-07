@@ -164,7 +164,7 @@ public class ScoreBoard extends JPanel{
 				}
 			}
 			value = temp;
-			if(index < 9) {
+			if(index < 8) {
 				insertToFile = insertToFile + value + ":" + Integer.toString(key)+"\n";
 			} else {
 				insertToFile = insertToFile + value + ":" + Integer.toString(key);

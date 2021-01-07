@@ -31,9 +31,9 @@ public class Board extends JPanel implements ActionListener {
 	private boolean isPaused = false;
 	private int curX = 0;
 	private int curY = 0;
-	private Shape curPiece;
+	private Shape currPiece;
 	private Shape nextPiece;
-//	private Shape holdPiece;
+	private Shape holdPiece;
 	private final ImageIcon icon = new ImageIcon("src/images/null.png");
 	private final JButton pauseButton = new JButton("Pause");
 	private final ScoreBox scorebox = new ScoreBox();
@@ -41,7 +41,8 @@ public class Board extends JPanel implements ActionListener {
 	private final Tetrominoes[] board = new Tetrominoes[BOARD_WIDTH * BOARD_HEIGHT];
 	private final PauseMenu pauseDialog;
 	private PieceBox nextPieceBox = null;
-//	private PieceBox holdPieceBox = null;
+	private PieceBox holdPieceBox = null;
+	private boolean isHold; // flag for checking if a block have been hold in this turn
 	private int score;
 	private int totalLines;
 
@@ -60,9 +61,9 @@ public class Board extends JPanel implements ActionListener {
 //		musicObject.playMusic();
 
 		// board
-		curPiece = new Shape();
+		currPiece = new Shape();
 		nextPiece = new Shape();
-//		holdPiece = new Shape();
+		holdPiece = new Shape();
 		timer = new Timer(400, this); // timer for lines down
 
 		addKeyListener(new MyTetrisAdapter());
@@ -78,7 +79,9 @@ public class Board extends JPanel implements ActionListener {
 		score = 0;
 		totalLines = 0;
 		clearBoard();
+		
 		nextPiece.setRandomShape();
+		holdPiece.setShape(Tetrominoes.NoShape);
 		newPiece();
 		timer.start();
 	}
@@ -100,7 +103,6 @@ public class Board extends JPanel implements ActionListener {
 			pauseButton.setVisible(true);
 			pauseDialog.hideDialog();
 		}
-
 		repaint();
 	}
 
@@ -111,14 +113,14 @@ public class Board extends JPanel implements ActionListener {
 	}
 
 	private void newPiece() {
-		curPiece.setShape(nextPiece.getShape());
+		currPiece.setShape(nextPiece.getShape());
 		nextPiece.setRandomShape();
 
 		curX = BOARD_WIDTH / 2;
-		curY = BOARD_HEIGHT + curPiece.minY();
+		curY = BOARD_HEIGHT + currPiece.minY();
 
-		if (!tryMove(curPiece, curX, curY - 1)) {
-			curPiece.setShape(Tetrominoes.NoShape);
+		if (!tryMove(currPiece, curX, curY - 1)) {
+			currPiece.setShape(Tetrominoes.NoShape);
 			timer.stop();
 			isStarted = false;
 			this.stopMusic();
@@ -130,8 +132,23 @@ public class Board extends JPanel implements ActionListener {
 				gotoScoreboard();
 			}
 		}
+		isHold = false;
 	}
 
+	private void hold() {
+		if (isHold) return;
+		
+		if (holdPiece.getShape() == Tetrominoes.NoShape) {
+			holdPiece.setShape(currPiece.getShape());
+			newPiece();
+		} else {
+			Tetrominoes temp = holdPiece.getShape();
+			holdPiece.setShape(currPiece.getShape());
+			currPiece.setShape(temp);
+		}
+		isHold = true;
+	}
+	
 	public void gotoScoreboard() {
 		JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this.getParent());
 
@@ -155,7 +172,7 @@ public class Board extends JPanel implements ActionListener {
 			if (shapeAt(x, y) != Tetrominoes.NoShape)
 				return false;
 		}
-		curPiece = newPiece;
+		currPiece = newPiece;
 		curX = newX;
 		curY = newY;
 		repaint();
@@ -195,17 +212,22 @@ public class Board extends JPanel implements ActionListener {
 				}
 			}
 		}
-		if (curPiece.getShape() != Tetrominoes.NoShape) {
+		if (currPiece.getShape() != Tetrominoes.NoShape) {
 			for (int i = 0; i < 4; ++i) {
-				int x = curX + curPiece.getX(i);
-				int y = curY - curPiece.getY(i);
+				int x = curX + currPiece.getX(i);
+				int y = curY - currPiece.getY(i);
 				drawSquare(g, boardLeft + x * squareWidth(), boardTop + (BOARD_HEIGHT - y - 1) * squareHeight(),
-						curPiece.getShape());
+						currPiece.getShape());
 			}
 		}
 		// nextPieceBox
 		if (nextPieceBox == null) nextPieceBox = new PieceBox(squareWidth(), squareHeight());
-		nextPieceBox.make(g, nextPiece, boardLeft + BOARD_WIDTH * squareWidth());
+		nextPieceBox.make(g, nextPiece, boardLeft + BOARD_WIDTH * squareWidth(), "Next");
+		
+		// holdPieceBox
+		if (holdPieceBox == null) holdPieceBox = new PieceBox(squareWidth(), squareHeight());
+		holdPieceBox.make(g, holdPiece, 0, "Hold");
+		
 		scorebox.make(g, score, totalLines);
 		pauseButton.repaint();
 	}
@@ -245,15 +267,15 @@ public class Board extends JPanel implements ActionListener {
 	}
 
 	private void oneLineDown() {
-		if (!tryMove(curPiece, curX, curY - 1))
+		if (!tryMove(currPiece, curX, curY - 1))
 			pieceDropped();
 	}
 
 	private void pieceDropped() {
 		for (int i = 0; i < 4; i++) {
-			int x = curX + curPiece.getX(i);
-			int y = curY - curPiece.getY(i);
-			board[y * BOARD_WIDTH + x] = curPiece.getShape();
+			int x = curX + currPiece.getX(i);
+			int y = curY - currPiece.getY(i);
+			board[y * BOARD_WIDTH + x] = currPiece.getShape();
 		}
 
 		removeFullLines();
@@ -298,7 +320,7 @@ public class Board extends JPanel implements ActionListener {
 		int _curY = curY;
 
 		while (newY > 0) {
-			if (!tryMove(curPiece, curX, newY - 1))
+			if (!tryMove(currPiece, curX, newY - 1))
 				break;
 
 			--newY;
@@ -311,7 +333,7 @@ public class Board extends JPanel implements ActionListener {
 
 		@Override
 		public void keyPressed(KeyEvent ke) {
-			if (!isStarted || curPiece.getShape() == Tetrominoes.NoShape)
+			if (!isStarted || currPiece.getShape() == Tetrominoes.NoShape)
 				return;
 
 			int keyCode = ke.getKeyCode();
@@ -321,17 +343,17 @@ public class Board extends JPanel implements ActionListener {
 				pause();
 				break;
 			case KeyEvent.VK_LEFT:
-				tryMove(curPiece, curX - 1, curY);
+				tryMove(currPiece, curX - 1, curY);
 				break;
 			case KeyEvent.VK_RIGHT:
-				tryMove(curPiece, curX + 1, curY);
+				tryMove(currPiece, curX + 1, curY);
 				break;
 			case KeyEvent.VK_UP:
-				tryMove(curPiece.rotateLeft(), curX, curY);
+				tryMove(currPiece.rotateLeft(), curX, curY);
 				break;
 			case 'z':
 			case 'Z':
-				tryMove(curPiece.rotateRight(), curX, curY);
+				tryMove(currPiece.rotateRight(), curX, curY);
 				break;
 			case KeyEvent.VK_SPACE:
 				dropDown();
@@ -339,6 +361,10 @@ public class Board extends JPanel implements ActionListener {
 			case KeyEvent.VK_DOWN:
 				++score;
 				oneLineDown();
+				break;
+			case 'c':
+			case 'C':
+				hold();
 				break;
 			}
 		}
