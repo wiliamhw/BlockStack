@@ -1,7 +1,7 @@
 # Tugas FP PBO
 Membuat game tetris.  
-![Main menu preivew]("Mainmenu Preview".jpg?raw=true)  
-![Ingame preivew]("Ingame Preview".jpg?raw=true)  
+![Main menu preivew](Mainmenu-Preview.jpg?raw=true)  
+![Ingame preivew](Ingame-Preview.jpg?raw=true)  
 
 # Tim
 #### Nama Kelompok: KamiSama
