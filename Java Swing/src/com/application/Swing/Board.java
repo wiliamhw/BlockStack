@@ -349,11 +349,11 @@ public class Board extends JPanel implements ActionListener {
 				tryMove(currPiece, curX + 1, curY);
 				break;
 			case KeyEvent.VK_UP:
-				tryMove(currPiece.rotateLeft(), curX, curY);
+				tryMove(currPiece.rotateRight(), curX, curY);
 				break;
 			case 'z':
 			case 'Z':
-				tryMove(currPiece.rotateRight(), curX, curY);
+				tryMove(currPiece.rotateLeft(), curX, curY);
 				break;
 			case KeyEvent.VK_SPACE:
 				dropDown();
