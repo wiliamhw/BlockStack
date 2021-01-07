@@ -18,7 +18,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
-import javax.swing.UIManager;
 
 import com.application.Swing.Shape.Tetrominoes;
 
@@ -62,9 +61,6 @@ public class Board extends JPanel implements ActionListener {
 		// pause menu
 		pauseDialog = new PauseMenu(frame, this, pauseButton);
 
-		// music
-		Main.sfx.ingame.playMusic(true);
-
 		// board
 		currPiece = new Shape();
 		nextPiece = new Shape();
@@ -79,8 +75,12 @@ public class Board extends JPanel implements ActionListener {
 		if (isPaused)
 			return;
 
+		// music
+		Main.sfx.ingame.playAudio(true);
+		
 		isStarted = true;
 		isFallingFinished = false;
+		isHold = false;
 		score = 0;
 		totalLines = 0;
 		clearBoard();
@@ -99,12 +99,12 @@ public class Board extends JPanel implements ActionListener {
 
 		if (isPaused) {
 			timer.stop();
-			Main.sfx.ingame.pauseMusic();
+			Main.sfx.ingame.pauseAudio();
 			pauseButton.setVisible(false);
 			pauseDialog.showDialog();
 		} else {
 			timer.start();
-			Main.sfx.ingame.playMusic(true);
+			Main.sfx.ingame.playAudio(true);
 			if(iconPause != null) {
 				pauseButton.setIcon(iconPause);
 				pauseButton.setText("");						
@@ -124,8 +124,10 @@ public class Board extends JPanel implements ActionListener {
 	}
 
 	private void newPiece() {
-		currPiece.setShape(nextPiece.getShape());
-		nextPiece.setRandomShape();
+		if (!isHold) {
+			currPiece.setShape(nextPiece.getShape());
+			nextPiece.setRandomShape();
+		}
 
 		curX = BOARD_WIDTH / 2;
 		curY = BOARD_HEIGHT + currPiece.minY();
@@ -134,10 +136,10 @@ public class Board extends JPanel implements ActionListener {
 			currPiece.setShape(Tetrominoes.NoShape);
 			timer.stop();
 			isStarted = false;
-			this.stopMusic();
+			Main.sfx.ingame.stopAudio();
 
 			// game over
-			Main.sfx.gameover.playMusic(false);
+			Main.sfx.gameover.playAudio(false);
 			int input = JOptionPane.showConfirmDialog(this, "Your Score : " + score, "Game Over",
 					JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, icon);
 			try {
@@ -149,7 +151,6 @@ public class Board extends JPanel implements ActionListener {
 				gotoScoreboard();
 			}
 		}
-		isHold = false;
 	}
 
 	private void hold() {
@@ -157,13 +158,13 @@ public class Board extends JPanel implements ActionListener {
 		
 		if (holdPiece.getShape() == Tetrominoes.NoShape) {
 			holdPiece.setShape(currPiece.getShape());
-			newPiece();
 		} else {
 			Tetrominoes temp = holdPiece.getShape();
 			holdPiece.setShape(currPiece.getShape());
 			currPiece.setShape(temp);
 		}
 		isHold = true;
+		newPiece();
 	}
 	
 	public void gotoScoreboard() {
@@ -183,8 +184,10 @@ public class Board extends JPanel implements ActionListener {
 			int x = newX + newPiece.getX(i);
 			int y = newY - newPiece.getY(i);
 
-			if (x < 0 || x >= BOARD_WIDTH || y < 0 || y >= BOARD_HEIGHT)
+			if (x < 0 || x >= BOARD_WIDTH || y < 0 || y >= BOARD_HEIGHT) {
+				Main.sfx.fix.playbackAudio(false);
 				return false;
+			}
 
 			if (shapeAt(x, y) != Tetrominoes.NoShape)
 				return false;
@@ -300,6 +303,7 @@ public class Board extends JPanel implements ActionListener {
 		if (!isFallingFinished) {
 			newPiece();
 		}
+		isHold = false;
 	}
 
 	private void removeFullLines() {
@@ -334,16 +338,16 @@ public class Board extends JPanel implements ActionListener {
 		case 0:
 			break;
 		case 1:
-			Main.sfx._single.playbackMusic();
+			Main.sfx._single.playbackAudio(false);
 			break;
 		case 2:
-			Main.sfx._double.playbackMusic();
+			Main.sfx._double.playbackAudio(false);
 			break;
 		case 3:
-			Main.sfx._triple.playbackMusic();
+			Main.sfx._triple.playbackAudio(false);
 			break;
 		default:
-			Main.sfx._tetris.playbackMusic();
+			Main.sfx._tetris.playbackAudio(false);
 			break;
 		}
 	}
@@ -373,68 +377,58 @@ public class Board extends JPanel implements ActionListener {
 
 			switch (keyCode) {
 			case KeyEvent.VK_ESCAPE:
-				Main.sfx.pause.playbackMusic();
+				Main.sfx.pause.playbackAudio(false);
 				pause();
 				break;
 			case KeyEvent.VK_LEFT:
-				Main.sfx.move.playbackMusic();
+				Main.sfx.move.playbackAudio(false);
 				tryMove(currPiece, curX - 1, curY);
 				break;
 			case KeyEvent.VK_RIGHT:
-				Main.sfx.move.playbackMusic();
+				Main.sfx.move.playbackAudio(false);
 				tryMove(currPiece, curX + 1, curY);
 				break;
 			case KeyEvent.VK_UP:
-				Main.sfx.rotate.playbackMusic();
+				Main.sfx.rotate.playbackAudio(false);
 				tryMove(currPiece.rotateRight(), curX, curY);
 				break;
 			case 'z':
 			case 'Z':
-				Main.sfx.rotate.playbackMusic();
+				Main.sfx.rotate.playbackAudio(false);
 				tryMove(currPiece.rotateLeft(), curX, curY);
 				break;
 			case KeyEvent.VK_SPACE:
-				Main.sfx.harddrop.playbackMusic();
+				Main.sfx.harddrop.playbackAudio(false);
 				dropDown();
 				break;
 			case KeyEvent.VK_DOWN:
-				Main.sfx.softdrop.playbackMusic();
+				Main.sfx.softdrop.playbackAudio(false);
 				++score;
 				oneLineDown();
 				break;
 			case 'c':
 			case 'C':
-				if (!isHold) Main.sfx.hold.playbackMusic();
+				if (!isHold) Main.sfx.hold.playbackAudio(false);
 				hold();
 				break;
 			}
 		}
 	}
 
-	public void stopMusic() {
-		Main.sfx.ingame.stopMusic();
-	}
-
 	public void setPauseAction(JButton button) {
 		button.addMouseListener(new MouseAdapter() {
 			public void mouseEntered(MouseEvent e) {
+				Main.sfx.cursor.playbackAudio(true);
 				button.setBorder(BorderFactory.createLineBorder(Color.GREEN, 5));
 			}
 
 			public void mouseClicked(MouseEvent e) {
-//				Main.sfx.ok.playbackMusic();
+				Main.sfx.ok.playbackAudio(true);
 				pause();
 			}
 
 			public void mouseExited(MouseEvent e) {
 				button.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 5));
-			}
-		});
-
-		button.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-//				Main.sfx.ok.playbackMusic();
-				pause();
 			}
 		});
 	}

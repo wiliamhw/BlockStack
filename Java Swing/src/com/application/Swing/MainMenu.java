@@ -6,7 +6,6 @@ import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.logging.*;
 import javax.imageio.ImageIO;
 
 public class MainMenu extends JPanel {
@@ -35,7 +34,7 @@ public class MainMenu extends JPanel {
 		setLayout(null);
 		try {
 			image = ImageIO.read(new File("src/images/MenuLogo.png"));
-//			home = ImageIO.read(new File("src/images/mainmenu.jpg"));
+			home = ImageIO.read(new File("src/images/mainmenu.jpg"));
 			iconStart = new ImageIcon("src/images/StartGameButton.png");
 			iconScore = new ImageIcon("src/images/ScoreButton.png");
 			iconCredits = new ImageIcon("src/images/CreditsButton.png");
@@ -59,7 +58,7 @@ public class MainMenu extends JPanel {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-//			Main.sfx.ok.playbackMusic();
+			Main.sfx.ok.playbackAudio(true);
 			if(e.getActionCommand().equals("") || e.getActionCommand().equals("Start Game")) {			
 				JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(play.getParent());
 				frame.setContentPane(new Board(frame));
@@ -79,7 +78,11 @@ public class MainMenu extends JPanel {
 			else if(e.getActionCommand().equals("  ") || e.getActionCommand().equals("Credits")) {
 				//show Credits
 				JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(credits.getParent());
-				JOptionPane.showMessageDialog(frame, "Kosim\nWilliam");
+				JOptionPane.showMessageDialog(frame, 
+						"William 05111940000087\n" +
+						"Kosim 05111940000096\n" +
+						"Tetris99 (Nintendo Switch)"
+					);
 			}
 			else if(e.getActionCommand().equals("   ") || e.getActionCommand().equals("Exit")) {
 				JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(exit.getParent());
@@ -97,7 +100,7 @@ public class MainMenu extends JPanel {
 	private void setHover(JButton button) {
 		button.addMouseListener(new MouseAdapter() {
 			public void mouseEntered(MouseEvent e) {
-//				Main.sfx.cursor.playbackMusic();
+				Main.sfx.cursor.playbackAudio(true);
 				button.setBorder(BorderFactory.createLineBorder(Color.GREEN, 5));
 			}
 			public void mouseExited(MouseEvent e) {

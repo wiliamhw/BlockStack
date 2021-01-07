@@ -119,6 +119,7 @@ public class ScoreBoard extends JPanel{
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if(e.getActionCommand().equals("Okay") || e.getActionCommand().equals("")) {
+				Main.sfx.ok.playbackAudio(true);
 				if(flagPlay == 1) {
 					scoreList.put(score, insertName.getText());
 					writeFile();
@@ -198,6 +199,7 @@ public class ScoreBoard extends JPanel{
 	private void setHover(JButton button) {
 		button.addMouseListener(new MouseAdapter() {
 			public void mouseEntered(MouseEvent e) {
+				Main.sfx.cursor.playbackAudio(true);
 				button.setBorder(BorderFactory.createLineBorder(Color.GREEN, 5));
 			}
 			public void mouseExited(MouseEvent e) {

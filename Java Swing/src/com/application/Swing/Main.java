@@ -39,7 +39,7 @@ public class Main {
 							// check if board class is already made
 							try {
 							   Board panel = (Board) frame.getContentPane();
-							   panel.stopMusic();
+							   sfx.ingame.stopAudio();
 							} 
 							catch (Exception ex) {} // do nothing
 						} else {
@@ -63,9 +63,9 @@ public class Main {
 			if(scoreFile.createNewFile()) {
 				writeFile = new FileWriter(scoreFile);
 				String defaultScore = new String(
-						  "Kosimp:811000\n"
-						+ "Wiliamp:711000\n"
-						+ "Samsul:61000\n"
+						  "Kosimp:20000\n"
+						+ "Wiliamp:19000\n"
+						+ "Samsul:6000\n"
 						+ "Udin:5000\n"
 						+ "John:4000\n"
 						+ "Jupiter:3000\n"

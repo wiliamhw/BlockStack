@@ -2,3 +2,4 @@
 bin
 src/music
 src/images
+src/score/ScoreBoard.dat
