@@ -5,7 +5,9 @@ import java.io.File;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
-//import javax.swing.JOptionPane;
+import javax.sound.sampled.LineEvent;
+import javax.sound.sampled.LineListener;
+
 
 public class Music {
 	
@@ -28,7 +30,7 @@ public class Music {
 				clip = AudioSystem.getClip();
 				clip.open(audioinput);
 			} else {
-				System.out.println("Can't find file");
+				System.out.println("Can't find " + musicLocation);
 			}
 		}
 		catch (Exception ex) {
@@ -36,10 +38,21 @@ public class Music {
 		}
 	}
 
-	public void playMusic() {
+	public void playMusic(boolean _loop) {
 		try {
 			clip.start();
-			clip.loop(Clip.LOOP_CONTINUOUSLY );
+			if (_loop) clip.loop(Clip.LOOP_CONTINUOUSLY );
+		}
+		catch (Exception ex) {
+			ex.printStackTrace();
+		}
+	}
+	
+	public void playbackMusic() {
+		try {
+			clipTimePosition = 0;
+			clip.setMicrosecondPosition(clipTimePosition);
+			playMusic(false);
 		}
 		catch (Exception ex) {
 			ex.printStackTrace();

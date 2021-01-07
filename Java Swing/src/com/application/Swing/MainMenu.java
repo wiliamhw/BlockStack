@@ -70,7 +70,7 @@ public class MainMenu extends JPanel {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			// TODO Auto-generated method stub
+//			Main.sfx.ok.playbackMusic();
 			if(e.getActionCommand().equals("Start Game")) {			
 				JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(play.getParent());
 				frame.setContentPane(new Board(frame));
@@ -98,7 +98,6 @@ public class MainMenu extends JPanel {
 						"Confirm Close", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
 				if(choose == JOptionPane.YES_OPTION) {
 					frame.dispose();
-//					System.out.println("close");
 				} else {
 					frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 				}
@@ -109,6 +108,7 @@ public class MainMenu extends JPanel {
 	private void setHover(JButton button) {
 		button.addMouseListener(new MouseAdapter() {
 			public void mouseEntered(MouseEvent e) {
+//				Main.sfx.cursor.playbackMusic();
 				button.setBackground(new Color(244, 179, 80));
 			}
 			public void mouseClicked(MouseEvent e) {

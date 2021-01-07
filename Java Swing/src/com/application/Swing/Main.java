@@ -13,6 +13,7 @@ public class Main {
 	public static BufferedImage background;
 	public static final int WIDTH = 750;
 	public static final int HEIGHT = 600;
+	public static final Effect sfx = new Effect();
 	
 	public static void main(String[] args) {
 		// ingame background

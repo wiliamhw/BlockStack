@@ -37,7 +37,6 @@ public class Board extends JPanel implements ActionListener {
 	private final ImageIcon icon = new ImageIcon("src/images/null.png");
 	private final JButton pauseButton = new JButton("Pause");
 	private final ScoreBox scorebox = new ScoreBox();
-	private final Music musicObject = new Music("src/music/Tetris99.wav");
 	private final Tetrominoes[] board = new Tetrominoes[BOARD_WIDTH * BOARD_HEIGHT];
 	private final PauseMenu pauseDialog;
 	private PieceBox nextPieceBox = null;
@@ -58,7 +57,7 @@ public class Board extends JPanel implements ActionListener {
 		pauseDialog = new PauseMenu(frame, this, pauseButton);
 
 		// music
-//		musicObject.playMusic();
+		Main.sfx.ingame.playMusic(true);
 
 		// board
 		currPiece = new Shape();
@@ -94,12 +93,12 @@ public class Board extends JPanel implements ActionListener {
 
 		if (isPaused) {
 			timer.stop();
-//			musicObject.pauseMusic();
+			Main.sfx.ingame.pauseMusic();
 			pauseButton.setVisible(false);
 			pauseDialog.showDialog();
 		} else {
 			timer.start();
-//			musicObject.playMusic();
+			Main.sfx.ingame.playMusic(true);
 			pauseButton.setVisible(true);
 			pauseDialog.hideDialog();
 		}
@@ -126,8 +125,14 @@ public class Board extends JPanel implements ActionListener {
 			this.stopMusic();
 
 			// game over
+			Main.sfx.gameover.playMusic(false);
 			int input = JOptionPane.showConfirmDialog(this, "Your Score : " + score, "Game Over",
 					JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, icon);
+			try {
+			    Thread.sleep(1000);
+			} catch(InterruptedException ex) {
+			    Thread.currentThread().interrupt();
+			}
 			if (input == 0) {
 				gotoScoreboard();
 			}
@@ -313,6 +318,22 @@ public class Board extends JPanel implements ActionListener {
 			}
 		}
 		totalLines += numFullLines;
+		switch (numFullLines) {
+		case 0:
+			break;
+		case 1:
+			Main.sfx._single.playbackMusic();
+			break;
+		case 2:
+			Main.sfx._double.playbackMusic();
+			break;
+		case 3:
+			Main.sfx._triple.playbackMusic();
+			break;
+		default:
+			Main.sfx._tetris.playbackMusic();
+			break;
+		}
 	}
 
 	private void dropDown() {
@@ -340,30 +361,38 @@ public class Board extends JPanel implements ActionListener {
 
 			switch (keyCode) {
 			case KeyEvent.VK_ESCAPE:
+				Main.sfx.pause.playbackMusic();
 				pause();
 				break;
 			case KeyEvent.VK_LEFT:
+				Main.sfx.move.playbackMusic();
 				tryMove(currPiece, curX - 1, curY);
 				break;
 			case KeyEvent.VK_RIGHT:
+				Main.sfx.move.playbackMusic();
 				tryMove(currPiece, curX + 1, curY);
 				break;
 			case KeyEvent.VK_UP:
+				Main.sfx.rotate.playbackMusic();
 				tryMove(currPiece.rotateRight(), curX, curY);
 				break;
 			case 'z':
 			case 'Z':
+				Main.sfx.rotate.playbackMusic();
 				tryMove(currPiece.rotateLeft(), curX, curY);
 				break;
 			case KeyEvent.VK_SPACE:
+				Main.sfx.harddrop.playbackMusic();
 				dropDown();
 				break;
 			case KeyEvent.VK_DOWN:
+				Main.sfx.softdrop.playbackMusic();
 				++score;
 				oneLineDown();
 				break;
 			case 'c':
 			case 'C':
+				if (!isHold) Main.sfx.hold.playbackMusic();
 				hold();
 				break;
 			}
@@ -371,7 +400,7 @@ public class Board extends JPanel implements ActionListener {
 	}
 
 	public void stopMusic() {
-		musicObject.stopMusic();
+		Main.sfx.ingame.stopMusic();
 	}
 
 	public void setPauseAction(JButton button) {
@@ -381,6 +410,7 @@ public class Board extends JPanel implements ActionListener {
 			}
 
 			public void mouseClicked(MouseEvent e) {
+//				Main.sfx.ok.playbackMusic();
 				pause();
 			}
 
@@ -399,6 +429,7 @@ public class Board extends JPanel implements ActionListener {
 
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+//				Main.sfx.ok.playbackMusic();
 				pause();
 			}
 		});

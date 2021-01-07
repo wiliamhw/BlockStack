@@ -73,7 +73,7 @@ public class PauseMenu extends JDialog {
 	public void showDialog() {
 		this.pack();
 		this.setLocationRelativeTo(this.board);
-//		pauseButton.setBackground(UIManager.getColor("control"));
+		pauseButton.setBackground(UIManager.getColor("control"));
 		board.setEnabled(false);
 		this.setVisible(true);
 	}
@@ -92,7 +92,7 @@ public class PauseMenu extends JDialog {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-
+//			Main.sfx.ok.playbackMusic();
 			if (e.getActionCommand().equals("Resume")) {
 				try {
 					PauseMenu dialog = (PauseMenu) SwingUtilities.getWindowAncestor(resume.getParent());
@@ -123,6 +123,7 @@ public class PauseMenu extends JDialog {
 	private void setHover(JButton button) {
 		button.addMouseListener(new MouseAdapter() {
 			public void mouseEntered(MouseEvent e) {
+//				Main.sfx.cursor.playbackMusic();
 				button.setBackground(new Color(244, 179, 80));
 			}
 
