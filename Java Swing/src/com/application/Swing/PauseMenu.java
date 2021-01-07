@@ -17,7 +17,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
-public class Pause extends JDialog {
+public class PauseMenu extends JDialog {
 
 	private final int areaWidth = 272;
 	private final int areaHeight = 340;
@@ -32,7 +32,7 @@ public class Pause extends JDialog {
 	private final JFrame frame;
 	private final Board board;
 
-	public Pause(JFrame owner, Board board, JButton pauseButton) {
+	public PauseMenu(JFrame owner, Board board, JButton pauseButton) {
 		super(owner, true);
 		this.frame = owner;
 		this.board = board;
@@ -73,7 +73,7 @@ public class Pause extends JDialog {
 	public void showDialog() {
 		this.pack();
 		this.setLocationRelativeTo(this.board);
-//		pauseButton.setBackground(UIManager.getColor("control"));
+		pauseButton.setBackground(UIManager.getColor("control"));
 		board.setEnabled(false);
 		this.setVisible(true);
 	}
@@ -92,10 +92,10 @@ public class Pause extends JDialog {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-
+//			Main.sfx.ok.playbackMusic();
 			if (e.getActionCommand().equals("Resume")) {
 				try {
-					Pause dialog = (Pause) SwingUtilities.getWindowAncestor(resume.getParent());
+					PauseMenu dialog = (PauseMenu) SwingUtilities.getWindowAncestor(resume.getParent());
 					pauseButton.setText("Pause");
 
 					dialog.unpause();
@@ -123,6 +123,7 @@ public class Pause extends JDialog {
 	private void setHover(JButton button) {
 		button.addMouseListener(new MouseAdapter() {
 			public void mouseEntered(MouseEvent e) {
+//				Main.sfx.cursor.playbackMusic();
 				button.setBackground(new Color(244, 179, 80));
 			}
 

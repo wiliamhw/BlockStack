@@ -21,6 +21,7 @@ public class ScoreBox {
 		int width = widthBase;
 		int height = heightBase;
 		
+		// box
 		g.setColor(Color.LIGHT_GRAY);
 		g.fillRect(x - padX, y - padY, width + 2*padX, height + 2*padY);
 		g.setColor(Color.DARK_GRAY);
@@ -32,10 +33,12 @@ public class ScoreBox {
 		width = newWidth;
 		height = 22;
 		
+		// score and lines column
 		g.setColor(Color.BLACK);
 		g.fillRect(x, y - 67, width, height);
 		g.fillRect(x, y, width, height);
 		
+		// string
 		g.setColor(Color.WHITE);
 		g.setFont(new Font("Tahoma", Font.BOLD, 18));
 		
