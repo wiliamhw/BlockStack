@@ -37,5 +37,5 @@ Membuat game tetris.
 # Cara Download Assets
 1. Download [assets](https://drive.google.com/file/d/1Suljo33B7DQ7TWR-V7rHMfZzUMnTDup-/view?usp=sharing).
 2. Ekstrak file assets.
-3. Copy file music dan images dari file assets ke folder `Java Swing\src`.
+3. Copy semua file dari file assets ke folder `Java Swing\src`.
 4. Import/refresh folder `Java Swing` di IDE.
