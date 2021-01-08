@@ -154,7 +154,10 @@ public class Board extends JPanel implements ActionListener {
 	}
 
 	private void hold() {
-		if (isHold) return;
+		if (isHold) {
+			Main.sfx.cancel.playbackAudio(true);
+			return;
+		}
 		
 		if (holdPiece.getShape() == Tetrominoes.NoShape) {
 			holdPiece.setShape(currPiece.getShape());
@@ -212,7 +215,7 @@ public class Board extends JPanel implements ActionListener {
 			System.out.println(e);
 		}
 		Dimension size = getSize();
-		g.setColor(Color.DARK_GRAY);
+		g.setColor(Color.BLACK);
 		int boardTop = (int) size.getHeight() - BOARD_HEIGHT * squareHeight();
 		int boardLeft = (Main.WIDTH - BOARD_WIDTH * squareWidth()) / 2;
 		g.fillRect(boardLeft, boardTop, squareWidth() * BOARD_WIDTH, (int) size.getHeight());

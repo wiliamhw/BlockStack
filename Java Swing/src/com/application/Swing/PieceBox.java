@@ -87,28 +87,32 @@ public class PieceBox {
 			}
 		}
 		int pWidth = squareWidth * (pMax[0] - pMin[0] + 1);
-		int pHeight = squareWidth * (pMax[1] - pMin[1] - 1);
+		int pHeight = squareWidth * (pMax[1] - pMin[1] + 1);
 		
 		temp[0] = x;
 		temp[1] = y + titleBarHeight;
 		if (this.piece.getShape() == Tetrominoes.LineShape) {
-			temp[0] += (this.width - pWidth)/2;
-			temp[1] += this.height / 4;
-		} else if (this.piece.getShape() == Tetrominoes.TShape) {
-			temp[0] += this.width / 2 - squareWidth/2;
-			temp[1] += this.height / 4;
-		} else if (this.piece.getShape() == Tetrominoes.ZShape ||
+			temp[0] += this.width/4;
+			temp[1] += (this.height - pHeight)/2;
+		} 
+		else if (this.piece.getShape() == Tetrominoes.TShape) {
+			temp[0] += (this.width - pWidth)/2 + squareHeight;
+			temp[1] += this.height/4;
+		} 
+		else if (this.piece.getShape() == Tetrominoes.ZShape ||
 					this.piece.getShape() == Tetrominoes.LShape) {
-			temp[0] += this.width / 2;
-			temp[1] += this.height / 2 - squareHeight/2;
-		}  else if (this.piece.getShape() == Tetrominoes.SquareShape) {
-			temp[0] += this.width / 4;
-			temp[1] += this.height / 4;
-		} else {
+			temp[0] += this.width/2;
+			temp[1] += (this.height - pHeight)/2 + squareHeight;
+		} 
+		else if (this.piece.getShape() == Tetrominoes.SShape ||
+					this.piece.getShape() == Tetrominoes.MirroredLShape) {
+			temp[0] += (this.width - pWidth)/2;
+			temp[1] += (this.height - pHeight)/2 + squareHeight;
+		} 
+		else if (this.piece.getShape() == Tetrominoes.SquareShape) {
 			temp[0] += (this.width - pWidth)/2;
 			temp[1] += (this.height - pHeight)/2;
 		}
-		
 		return temp;
 	}
 

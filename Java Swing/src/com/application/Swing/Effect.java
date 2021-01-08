@@ -17,4 +17,5 @@ public class Effect {
 	public final Audio ok = new Audio("src/music/cursor2.wav"); // temporarily changed, original name = ok
 	public final Audio cursor = new Audio("src/music/cursor.wav");
 	public final Audio fix = new Audio("src/music/fix.wav");
+	public final Audio cancel = new Audio("src/music/cancel.wav");
 }
