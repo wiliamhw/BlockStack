@@ -92,27 +92,32 @@ public class PieceBox {
 		temp[0] = x;
 		temp[1] = y + titleBarHeight;
 		if (this.piece.getShape() == Tetrominoes.LineShape) {
+			// center == middle-middle
 			temp[0] += this.width/4;
 			temp[1] += (this.height - pHeight)/2;
 		} 
 		else if (this.piece.getShape() == Tetrominoes.TShape) {
+			// center == middle-left
 			temp[0] += (this.width - pWidth)/2 + squareHeight;
 			temp[1] += this.height/4;
 		} 
-		else if (this.piece.getShape() == Tetrominoes.ZShape ||
-					this.piece.getShape() == Tetrominoes.LShape) {
+		else if (this.piece.getShape() == Tetrominoes.LShape) {
+			// center == middle-right
 			temp[0] += this.width/2;
 			temp[1] += (this.height - pHeight)/2 + squareHeight;
 		} 
-		else if (this.piece.getShape() == Tetrominoes.SShape ||
-					this.piece.getShape() == Tetrominoes.MirroredLShape) {
-			temp[0] += (this.width - pWidth)/2;
-			temp[1] += (this.height - pHeight)/2 + squareHeight;
-		} 
 		else if (this.piece.getShape() == Tetrominoes.SquareShape) {
+			// center == upper-left
 			temp[0] += (this.width - pWidth)/2;
 			temp[1] += (this.height - pHeight)/2;
 		}
+		else {
+			// center == middle-left
+			// shape == S, mirroredL, OR Z
+			temp[0] += (this.width - pWidth)/2;
+			temp[1] += (this.height - pHeight)/2 + squareHeight;
+		} 
+		
 		return temp;
 	}
 

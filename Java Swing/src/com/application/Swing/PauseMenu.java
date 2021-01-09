@@ -44,7 +44,7 @@ public class PauseMenu extends JDialog {
 		this.setPreferredSize(new Dimension(areaWidth, areaHeight));
 		this.setLayout(null);
 		this.setUndecorated(true);
-		this.getContentPane().setBackground(Color.DARK_GRAY);
+		this.getContentPane().setBackground(new Color(46, 49, 49));
 		getRootPane().setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 10));
 
 		
@@ -58,7 +58,7 @@ public class PauseMenu extends JDialog {
 		
 		setButton();
 
-		pauseHeader.setBackground(Color.DARK_GRAY);
+		pauseHeader.setBackground(new Color(46, 49, 49));
 		pauseHeader.setBorder(null);
 		pauseHeader.setFont(new Font("Tahoma", Font.BOLD, 30));
 		pauseHeader.setHorizontalAlignment(JTextField.CENTER);

@@ -57,7 +57,7 @@ public class ScoreBoard extends JPanel{
 			System.out.println(e);
 		}
 		int paddingTop = 60;
-		g.setColor(Color.DARK_GRAY);
+		g.setColor(new Color(46, 49, 49));
 		g.fillRect(180, 50, 370, 475);
 		
 		// border

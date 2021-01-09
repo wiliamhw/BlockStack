@@ -6,8 +6,8 @@ import java.util.Random;
 public class Shape {
 	enum Tetrominoes {
 		NoShape(new int[][] { { 0, 0 }, { 0, 0 }, { 0, 0 }, { 0, 0 } }, new Color(0, 0, 0)),
-		ZShape(new int[][] { { 0, -1 }, { 0, 0 }, { -1, 0 }, { -1, 1 } }, new Color(204, 102, 102)),
-		SShape(new int[][] { { 0, -1 }, { 0, 0 }, { 1, 0 }, { 1, 1 } }, new Color(102, 204, 102)),
+		ZShape(new int[][] { { 0, -1 }, { 0, 0 }, { 1, 0 }, { 1, 1 } }, new Color(204, 102, 102)),
+		SShape(new int[][] { { 0, 1 }, { 0, 0 }, { 1, 0 }, { 1, -1 } }, new Color(102, 204, 102)),
 		LineShape(new int[][] { { -1, 0 }, { 0, 0 }, { 1, 0 }, { 2, 0 } }, new Color(102, 102, 204)),
 		TShape(new int[][] { { -1, 0 }, { 0, 0 }, { 1, 0 }, { 0, 1 } }, new Color(204, 204, 102)),
 		SquareShape(new int[][] { { 0, 0 }, { 1, 0 }, { 0, 1 }, { 1, 1 } }, new Color(204, 102, 204)),

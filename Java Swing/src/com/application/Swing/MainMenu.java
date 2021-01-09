@@ -51,7 +51,7 @@ public class MainMenu extends JPanel {
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		g.drawImage(home, 0, 0, null);
-		g.drawImage(image, ((areaWidth/2) - image.getWidth()/2), 20, null);
+		g.drawImage(image, ((areaWidth/2) - image.getWidth()/2), 30, null);
 	}
 	
 	public class ButtonHandler implements ActionListener{
