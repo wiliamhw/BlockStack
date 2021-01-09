@@ -41,7 +41,9 @@ public class Board extends JPanel implements ActionListener {
 	private final PauseMenu pauseDialog;
 	private PieceBox nextPieceBox = null;
 	private PieceBox holdPieceBox = null;
+	private Ghost ghost = null;
 	private boolean isHold; // flag for checking if a block have been hold in this turn
+	private boolean enableGhost;
 	private int score;
 	private int totalLines;
 	private ImageIcon iconPause = null;
@@ -81,6 +83,7 @@ public class Board extends JPanel implements ActionListener {
 		isStarted = true;
 		isFallingFinished = false;
 		isHold = false;
+		enableGhost = false;
 		score = 0;
 		totalLines = 0;
 		clearBoard();
@@ -215,11 +218,19 @@ public class Board extends JPanel implements ActionListener {
 			System.out.println(e);
 		}
 		Dimension size = getSize();
-		g.setColor(Color.BLACK);
+		g.setColor(new Color(36, 37, 32));
 		int boardTop = (int) size.getHeight() - BOARD_HEIGHT * squareHeight();
 		int boardLeft = (Main.WIDTH - BOARD_WIDTH * squareWidth()) / 2;
 		g.fillRect(boardLeft, boardTop, squareWidth() * BOARD_WIDTH, (int) size.getHeight());
 
+		// ghost
+		if (ghost == null) ghost = new Ghost(squareWidth(), squareHeight(), 
+										BOARD_WIDTH, BOARD_HEIGHT, boardLeft, boardTop);
+		if (enableGhost && currPiece.getShape() != Tetrominoes.NoShape)  {
+			ghost.make(g, board, currPiece, curX, curY);
+		}
+		
+		// pieces
 		for (int i = 0; i < BOARD_HEIGHT; i++) {
 			for (int j = 0; j < BOARD_WIDTH; ++j) {
 
@@ -303,10 +314,10 @@ public class Board extends JPanel implements ActionListener {
 
 		removeFullLines();
 
+		isHold = false;
 		if (!isFallingFinished) {
 			newPiece();
 		}
-		isHold = false;
 	}
 
 	private void removeFullLines() {
@@ -413,6 +424,11 @@ public class Board extends JPanel implements ActionListener {
 			case 'C':
 				if (!isHold) Main.sfx.hold.playbackAudio(false);
 				hold();
+				break;
+			case 'g':
+			case 'G':
+				Main.sfx.ok.playbackAudio(false);
+				enableGhost = !enableGhost;
 				break;
 			}
 		}

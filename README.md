@@ -20,7 +20,8 @@ Membuat game tetris.
 * Huruf "Z" = putar ke kiri.  
 * Spasi = hard drop.  
 * Bawah = soft drop.  
-* Huruf "C" = hold.  
+* Huruf "C" = hold. 
+* Huruf "G" = nyalakan/matikan balok hantu.  
 
 ## Sistem Scoring
 * n baris yang full secara konsekutif memberikan score sebanyak (100)n^2.  
