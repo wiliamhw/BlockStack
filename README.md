@@ -36,6 +36,7 @@ Membuat game tetris.
 * Level dimulai dari level 1 hingga level 15.
 * Persamaan frekuensi turun balok (dalam millisecond)
     * Un = 12.5n(n + 22)
+    * n = level
 
 ## Info Tambahan
 * Nama pada scoreboard hanya bisa menampung 8 karakter.
