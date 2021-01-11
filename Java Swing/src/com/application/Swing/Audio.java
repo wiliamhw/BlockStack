@@ -8,6 +8,31 @@ import javax.sound.sampled.Clip;
 
 public class Audio {
 
+	// Tetris99 Nintendo Switch Assets
+	enum Sfx {
+		ingame(new Audio("src/music/ingame.wav")),
+		gameover(new Audio("src/music/gameover.wav")),
+		harddrop(new Audio("src/music/harddrop.wav")),
+		hold(new Audio("src/music/hold.wav")),
+		move(new Audio("src/music/move.wav")),
+		pause(new Audio("src/music/pause.wav")),
+		rotate(new Audio("src/music/rotate.wav")),
+		softdrop(new Audio("src/music/softdrop.wav")),
+		_single(new Audio("src/music/single.wav")),
+		_double(new Audio("src/music/double.wav")),
+		_triple(new Audio("src/music/triple.wav")),
+		_tetris(new Audio("src/music/tetris.wav")),
+		ok(new Audio("src/music/cursor2.wav")),
+		cursor(new Audio("src/music/cursor.wav")),
+		fix(new Audio("src/music/fix.wav")),
+		cancel(new Audio("src/music/cancel.wav"));
+
+		public Audio audio;
+		private Sfx(Audio audio) {
+			this.audio = audio;
+		}
+	}
+
 	private final String musicLocation;
 	private final File musicPath;
 	private Clip clip;

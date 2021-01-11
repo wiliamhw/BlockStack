@@ -1,6 +1,9 @@
 package com.application.Swing;
 
 import javax.swing.*;
+
+import com.application.Swing.Audio.Sfx;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
@@ -58,7 +61,7 @@ public class MainMenu extends JPanel {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			Main.sfx.ok.playbackAudio(true);
+			Sfx.ok.audio.playbackAudio(true);
 			if(e.getActionCommand().equals("") || e.getActionCommand().equals("Start Game")) {			
 				JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(play.getParent());
 				frame.setContentPane(new Board(frame));
@@ -100,7 +103,7 @@ public class MainMenu extends JPanel {
 	private void setHover(JButton button) {
 		button.addMouseListener(new MouseAdapter() {
 			public void mouseEntered(MouseEvent e) {
-				Main.sfx.cursor.playbackAudio(true);
+				Sfx.cursor.audio.playbackAudio(true);
 				button.setBorder(BorderFactory.createLineBorder(Color.GREEN, 5));
 			}
 			public void mouseExited(MouseEvent e) {

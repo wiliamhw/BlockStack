@@ -18,6 +18,8 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
+import com.application.Swing.Audio.Sfx;
+
 public class PauseMenu extends JDialog {
 
 	private final int areaWidth = 272;
@@ -92,7 +94,7 @@ public class PauseMenu extends JDialog {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			Main.sfx.ok.playbackAudio(true);
+			Sfx.ok.audio.playbackAudio(true);
 			if (e.getActionCommand().equals("Resume") || e.getActionCommand().equals("")) {
 				try {
 					PauseMenu dialog = (PauseMenu) SwingUtilities.getWindowAncestor(resume.getParent());
@@ -102,7 +104,7 @@ public class PauseMenu extends JDialog {
 					System.out.println(ex);
 				}
 			} else if (e.getActionCommand().equals("Restart") || e.getActionCommand().equals(" ")) {
-				Main.sfx.ingame.stopAudio();
+				Sfx.ingame.audio.stopAudio();
 				unpause();
 				board.start();
 				board.repaint();
@@ -111,7 +113,7 @@ public class PauseMenu extends JDialog {
 				int choose = JOptionPane.showConfirmDialog(frame, "Do you really want to go back to main menu?",
 						"Confirm Back", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
 				if (choose == JOptionPane.YES_OPTION) {
-					Main.sfx.ingame.stopAudio();
+					Sfx.ingame.audio.stopAudio();
 					hideDialog();
 					board.gotoScoreboard();
 				}
@@ -123,7 +125,7 @@ public class PauseMenu extends JDialog {
 	private void setHover(JButton button) {
 		button.addMouseListener(new MouseAdapter() {
 			public void mouseEntered(MouseEvent e) {
-				Main.sfx.cursor.playbackAudio(true);
+				Sfx.cursor.audio.playbackAudio(true);
 				button.setBorder(BorderFactory.createLineBorder(Color.GREEN, 5));
 			}
 			public void mouseExited(MouseEvent e) {

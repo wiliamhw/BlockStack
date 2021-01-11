@@ -2,10 +2,11 @@ package com.application.Swing;
 
 import javax.swing.*;
 
+import com.application.Swing.Audio.Sfx;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
-import java.util.List;
 import java.util.*;
 
 public class ScoreBoard extends JPanel{
@@ -119,7 +120,7 @@ public class ScoreBoard extends JPanel{
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if(e.getActionCommand().equals("Okay") || e.getActionCommand().equals("")) {
-				Main.sfx.ok.playbackAudio(true);
+				Sfx.ok.audio.playbackAudio(true);
 				if(flagPlay == 1) {
 					scoreList.put(score, insertName.getText());
 					writeFile();
@@ -199,7 +200,7 @@ public class ScoreBoard extends JPanel{
 	private void setHover(JButton button) {
 		button.addMouseListener(new MouseAdapter() {
 			public void mouseEntered(MouseEvent e) {
-				Main.sfx.cursor.playbackAudio(true);
+				Sfx.cursor.audio.playbackAudio(true);
 				button.setBorder(BorderFactory.createLineBorder(Color.GREEN, 5));
 			}
 			public void mouseExited(MouseEvent e) {

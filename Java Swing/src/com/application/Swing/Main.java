@@ -6,6 +6,9 @@ import java.awt.image.BufferedImage;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+
+import com.application.Swing.Audio.Sfx;
+
 import java.io.*;
 
 public class Main {
@@ -13,7 +16,6 @@ public class Main {
 	public static BufferedImage background;
 	public static final int WIDTH = 750;
 	public static final int HEIGHT = 600;
-	public static final Effect sfx = new Effect();
 	
 	public static void main(String[] args) {
 		// ingame background
@@ -39,7 +41,7 @@ public class Main {
 							// check if board class is already made
 							try {
 							   Board panel = (Board) frame.getContentPane();
-							   sfx.ingame.stopAudio();
+							   Sfx.ingame.audio.stopAudio();
 							} 
 							catch (Exception ex) {} // do nothing
 						} else {
