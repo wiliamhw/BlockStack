@@ -25,10 +25,17 @@ Membuat game tetris.
 
 ## Sistem Scoring
 * n baris yang full secara konsekutif memberikan score sebanyak (100)n^2.  
-	* Un = 100 + 200(n-1).  
+	* Un = 100(2n-1).  
 	* Sn = 100n^2.  
 * Score akan bertambah 1 setiap soft drop.  
 * Score akan bertambah sebanyak (2 * jarak ketinggian) setiap hard drop.  
+
+## Sistem Level  
+* Semakin tinggi level, maka kecepatan turun balok akan semakin meningkat.
+* Pemain akan naik satu level setiap 10 baris yang full.
+* Level dimulai dari level 1 hingga level 15.
+* Persamaan frekuensi turun balok (dalam millisecond)
+    * Un = 12.5n(n + 22)
 
 ## Info Tambahan
 * Nama pada scoreboard hanya bisa menampung 8 karakter.

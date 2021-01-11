@@ -25,7 +25,8 @@ public class Audio {
 		ok(new Audio("src/music/cursor2.wav")),
 		cursor(new Audio("src/music/cursor.wav")),
 		fix(new Audio("src/music/fix.wav")),
-		cancel(new Audio("src/music/cancel.wav"));
+		cancel(new Audio("src/music/cancel.wav")),
+		landing(new Audio("src/music/landing.wav"));
 
 		public Audio audio;
 		private Sfx(Audio audio) {

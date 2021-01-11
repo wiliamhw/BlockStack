@@ -15,7 +15,7 @@ public class ScoreBox {
 	
 	public ScoreBox() {}
 	
-	public void make(Graphics g, int score, int totalLines) {
+	public void make(Graphics g, int score, int level, int totalLines) {
 		int x = xBase;
 		int y = yBase;
 		int width = widthBase;
@@ -29,14 +29,16 @@ public class ScoreBox {
 		
 		int newWidth = 95;
 		x += (width - newWidth)/2;
-		y = 441;
+		y = 410;
 		width = newWidth;
 		height = 22;
+		int dist = 50;
 		
 		// score and lines column
 		g.setColor(Color.BLACK);
-		g.fillRect(x, y - 67, width, height);
+		g.fillRect(x, y - dist, width, height);
 		g.fillRect(x, y, width, height);
+		g.fillRect(x, y + dist, width, height);
 		
 		// string
 		g.setColor(Color.WHITE);
@@ -46,10 +48,11 @@ public class ScoreBox {
 		FontMetrics font = g.getFontMetrics();
 		String str = "Score";
 		x = tmpX + (width - font.stringWidth(str))/2;
-		y += (height - font.getHeight())/2 - 67 - 5;
+		y += (height - font.getHeight())/2 - 5;
 		
-		g.drawString("Score", x, y);
-		g.drawString("Lines", x, y + 67);
+		g.drawString("Score", x, y - dist);
+		g.drawString("Level", x, y);
+		g.drawString("Lines", x, y + dist);
 		
 		g.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		font = g.getFontMetrics();
@@ -57,10 +60,15 @@ public class ScoreBox {
 		str = Integer.toString(score);
 		x = tmpX + (width - font.stringWidth(str))/2;
 		y += height;
+		g.drawString(str, x, y - dist);
+		
+		str = Integer.toString(level);
+		x = tmpX + (width - font.stringWidth(str))/2;
 		g.drawString(str, x, y);
+		
 		
 		str = Integer.toString(totalLines);
 		x = tmpX + (width - font.stringWidth(str))/2;
-		g.drawString(str, x, y + 67);
+		g.drawString(str, x, y + dist);
 	}
 }

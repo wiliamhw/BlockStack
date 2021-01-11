@@ -47,6 +47,8 @@ public class Board extends JPanel implements ActionListener {
 	private boolean enableGhost;
 	private int score;
 	private int totalLines;
+	private int level;
+	private Speed speed;
 	private ImageIcon iconPause = null;
 		
 
@@ -68,7 +70,10 @@ public class Board extends JPanel implements ActionListener {
 		currPiece = new Shape();
 		nextPiece = new Shape();
 		holdPiece = new Shape();
-		timer = new Timer(400, this); // timer for lines down
+		
+		int diff = 25;
+		speed = new Speed(575, 225, diff, 10);
+		timer = new Timer(diff, this); // timer for lines down
 
 		addKeyListener(new MyTetrisAdapter());
 		start();
@@ -87,6 +92,7 @@ public class Board extends JPanel implements ActionListener {
 		enableGhost = true;
 		score = 0;
 		totalLines = 0;
+		level = 1;
 		clearBoard();
 		
 		nextPiece.setRandomShape();
@@ -263,7 +269,7 @@ public class Board extends JPanel implements ActionListener {
 		if (holdPieceBox == null) holdPieceBox = new PieceBox(squareWidth(), squareHeight());
 		holdPieceBox.make(g, holdPiece, 0, "Hold");
 		
-		scorebox.make(g, score, totalLines);
+		scorebox.make(g, score, level, totalLines);
 		pauseButton.repaint();
 	}
 
@@ -297,13 +303,17 @@ public class Board extends JPanel implements ActionListener {
 			isFallingFinished = false;
 			newPiece();
 		} else {
-			oneLineDown();
+			if (speed.doAction()) {
+				oneLineDown();
+			}
 		}
 	}
 
 	private void oneLineDown() {
-		if (!tryMove(currPiece, curX, curY - 1))
+		if (!tryMove(currPiece, curX, curY - 1)) {
+			Sfx.landing.audio.playbackAudio(true);
 			pieceDropped();
+		}
 	}
 
 	private void pieceDropped() {
@@ -335,6 +345,7 @@ public class Board extends JPanel implements ActionListener {
 			}
 			if (lineIsFull) {
 				++numFullLines;
+				level += speed.raisetempLines();
 
 				for (int k = i; k < BOARD_HEIGHT - 1; ++k) {
 					for (int j = 0; j < BOARD_WIDTH; ++j) {
