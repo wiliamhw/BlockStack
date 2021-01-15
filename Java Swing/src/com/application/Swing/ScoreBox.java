@@ -5,70 +5,65 @@ import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 
-public class ScoreBox {
-	private final int widthBase = 137;
-	private final int heightBase = 211;
-	private final int xBase = 42;
-	private final int yBase = 310;
-	private final int padX = 10;
-	private final int padY = 23;
+public class ScoreBox extends Box {
+	private final int columnWidth; // textfield width
+	private final int columnHeight;
+	private final int paddingY; // vertical padding for each textfield column
 	
-	public ScoreBox() {}
+	public ScoreBox(int baseX, int baseY, int width, int height, int borderX, int borderY,
+					int columnWidth, int columnHeight, int paddingY) {
+		super(baseX, baseY, width, height, borderX, borderY);
+		this.columnWidth = columnWidth;
+		this.columnHeight = columnHeight;
+		this.paddingY = paddingY;
+	}
 	
+	// make components inside the box
 	public void make(Graphics g, int score, int level, int totalLines) {
-		int x = xBase;
-		int y = yBase;
-		int width = widthBase;
-		int height = heightBase;
+		super.make(g); // make box
 		
-		// box
-		g.setColor(Color.LIGHT_GRAY);
-		g.fillRect(x - padX, y - padY, width + 2*padX, height + 2*padY);
-		g.setColor(Color.DARK_GRAY);
-		g.fillRect(x, y, width, height);
+		// set variable 
+		curX = getBaseX() + (getWidth() - columnWidth)/2;
+		curY = getBaseY() + paddingY;
+		int _baseX = curX;
+		int _baseY = curY;
 		
-		int newWidth = 95;
-		x += (width - newWidth)/2;
-		y = 410;
-		width = newWidth;
-		height = 22;
-		int dist = 50;
-		
-		// score and lines column
+		// draw score, level, and lines column
 		g.setColor(Color.BLACK);
-		g.fillRect(x, y - dist, width, height);
-		g.fillRect(x, y, width, height);
-		g.fillRect(x, y + dist, width, height);
+		for (int i = 0; i < 3; i++) {
+			g.fillRect(curX, curY, columnWidth, columnHeight);
+			curY += paddingY;
+		}
 		
-		// string
+		// set textfield label font
 		g.setColor(Color.WHITE);
 		g.setFont(new Font("Tahoma", Font.BOLD, 18));
 		
-		int tmpX = x;
+		// variable for aligning text to middle
 		FontMetrics font = g.getFontMetrics();
-		String str = "Score";
-		x = tmpX + (width - font.stringWidth(str))/2;
-		y += (height - font.getHeight())/2 - 5;
 		
-		g.drawString("Score", x, y - dist);
-		g.drawString("Level", x, y);
-		g.drawString("Lines", x, y + dist);
+		// draw textfield label in middle
+		curY = _baseY - (columnHeight - font.getHeight())/2 - 5;
+		String label[] = {"Score", "Level", "Lines"};
+		for (String s : label) {
+			curX = _baseX + (columnWidth - font.stringWidth(s))/2;
+			g.drawString(s, curX, curY);
+			curY += paddingY;
+		}
 		
+		// set textfield value font
 		g.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		font = g.getFontMetrics();
 		
-		str = Integer.toString(score);
-		x = tmpX + (width - font.stringWidth(str))/2;
-		y += height;
-		g.drawString(str, x, y - dist);
-		
-		str = Integer.toString(level);
-		x = tmpX + (width - font.stringWidth(str))/2;
-		g.drawString(str, x, y);
-		
-		
-		str = Integer.toString(totalLines);
-		x = tmpX + (width - font.stringWidth(str))/2;
-		g.drawString(str, x, y + dist);
+		// align textfiled value to middle
+		curY = _baseY + (columnHeight + font.getHeight())/2 - 3;
+		String value[] = {Integer.toString(score), 
+							Integer.toString(level), 
+							Integer.toString(totalLines)};
+		for (String s : value) {
+			curX = _baseX + (columnWidth - font.stringWidth(s))/2;
+			g.drawString(s, curX, curY);
+			curY += paddingY;
+		}
 	}
 }

@@ -24,32 +24,32 @@ import com.application.Swing.Shape.Tetrominoes;
 
 public class Board extends JPanel implements ActionListener {
 
-	private static final int BOARD_WIDTH = 10;
-	private static final int BOARD_HEIGHT = 20;
-	private final Timer timer;
-	private boolean isFallingFinished = false;
-	private boolean isStarted = false;
-	private boolean isPaused = false;
-	private int curX = 0;
-	private int curY = 0;
-	private Shape currPiece;
-	private Shape nextPiece;
-	private Shape holdPiece;
 	private final ImageIcon icon = new ImageIcon("src/images/null.png");
-	protected JButton pauseButton;
-	private final ScoreBox scorebox = new ScoreBox();
 	private final Tetrominoes[] board = new Tetrominoes[BOARD_WIDTH * BOARD_HEIGHT];
 	private final PauseMenu pauseDialog;
-	private PieceBox nextPieceBox = null;
-	private PieceBox holdPieceBox = null;
-	private Ghost ghost = null;
-	private boolean isHold; // flag for checking if a block have been hold in this turn
-	private boolean enableGhost;
+	private final Timer timer;
+	private static final int BOARD_WIDTH = 10;
+	private static final int BOARD_HEIGHT = 20;
+	private int curX = 0;
+	private int curY = 0;
 	private int score;
 	private int totalLines;
 	private int level;
-	private Speed speed;
+	private boolean isFallingFinished;
+	private boolean isStarted;
+	private boolean isPaused;
+	private boolean isHold; // flag for checking if a block have been hold in this turn
+	private boolean enableGhost;
+	private Shape currPiece;
+	private Shape nextPiece;
+	private Shape holdPiece;
+	private PieceBox nextPieceBox = null;
+	private PieceBox holdPieceBox = null;
+	private ScoreBox scorebox = null;
+	private Ghost ghost = null;
 	private ImageIcon iconPause = null;
+	private Speed speed;
+	protected JButton pauseButton;
 		
 
 	public Board(JFrame frame) {
@@ -82,9 +82,6 @@ public class Board extends JPanel implements ActionListener {
 	public void start() {
 		if (isPaused)
 			return;
-
-		// music
-		Sfx.ingame.audio.playAudio(true);
 		
 		isStarted = true;
 		isFallingFinished = false;
@@ -93,8 +90,9 @@ public class Board extends JPanel implements ActionListener {
 		score = 0;
 		totalLines = 0;
 		level = 1;
-		clearBoard();
 		
+		Sfx.ingame.audio.playAudio(true); // music
+		clearBoard();
 		nextPiece.setRandomShape();
 		holdPiece.setShape(Tetrominoes.NoShape);
 		newPiece();
@@ -226,12 +224,12 @@ public class Board extends JPanel implements ActionListener {
 		}
 		Dimension size = getSize();
 		g.setColor(new Color(36, 37, 32));
-		int boardTop = (int) size.getHeight() - BOARD_HEIGHT * squareHeight();
-		int boardLeft = (Main.WIDTH - BOARD_WIDTH * squareWidth()) / 2;
-		g.fillRect(boardLeft, boardTop, squareWidth() * BOARD_WIDTH, (int) size.getHeight());
+		int boardTop = (int) size.getHeight() - BOARD_HEIGHT * squareSide();
+		int boardLeft = (Main.WIDTH - BOARD_WIDTH * squareSide()) / 2;
+		g.fillRect(boardLeft, boardTop, squareSide() * BOARD_WIDTH, (int) size.getHeight());
 
 		// ghost
-		if (ghost == null) ghost = new Ghost(squareWidth(), squareHeight(), 
+		if (ghost == null) ghost = new Ghost(squareSide(), squareSide(), 
 										BOARD_WIDTH, BOARD_HEIGHT, boardLeft, boardTop);
 		if (enableGhost && currPiece.getShape() != Tetrominoes.NoShape)  {
 			ghost.make(g, board, currPiece, curX, curY);
@@ -243,13 +241,13 @@ public class Board extends JPanel implements ActionListener {
 
 				// Grid
 				g.setColor(new Color(1f, 1f, 1f, .25f));
-				g.drawRect(boardLeft + j * squareWidth(), boardTop + i * squareHeight(), squareWidth(), squareHeight());
+				g.drawRect(boardLeft + j * squareSide(), boardTop + i * squareSide(), squareSide(), squareSide());
 
 				// rendering placed shape
 				Tetrominoes shape = shapeAt(j, BOARD_HEIGHT - i - 1);
 
 				if (shape != Tetrominoes.NoShape) {
-					drawSquare(g, boardLeft + j * squareWidth(), boardTop + i * squareHeight(), shape);
+					drawSquare(g, boardLeft + j * squareSide(), boardTop + i * squareSide(), shape);
 				}
 			}
 		}
@@ -257,18 +255,21 @@ public class Board extends JPanel implements ActionListener {
 			for (int i = 0; i < 4; ++i) {
 				int x = curX + currPiece.getX(i);
 				int y = curY - currPiece.getY(i);
-				drawSquare(g, boardLeft + x * squareWidth(), boardTop + (BOARD_HEIGHT - y - 1) * squareHeight(),
+				drawSquare(g, boardLeft + x * squareSide(), boardTop + (BOARD_HEIGHT - y - 1) * squareSide(),
 						currPiece.getShape());
 			}
 		}
-		// nextPieceBox
-		if (nextPieceBox == null) nextPieceBox = new PieceBox(squareWidth(), squareHeight());
-		nextPieceBox.make(g, nextPiece, boardLeft + BOARD_WIDTH * squareWidth(), "Next");
+		// draw nextPieceBox = PieceBox(baseX, baseY, border, squareSide, String title)
+		if (nextPieceBox == null) nextPieceBox = new PieceBox(boardLeft + BOARD_WIDTH * squareSide() + 50,
+																50, 10, squareSide(), "Next");
+		nextPieceBox.make(g, nextPiece);
 		
-		// holdPieceBox
-		if (holdPieceBox == null) holdPieceBox = new PieceBox(squareWidth(), squareHeight());
-		holdPieceBox.make(g, holdPiece, 0, "Hold");
+		// draw holdPieceBox = PieceBox(baseX, baseY, border, squareSide, String title)
+		if (holdPieceBox == null) holdPieceBox = new PieceBox(50, 50, 10, squareSide(), "Hold");
+		holdPieceBox.make(g, holdPiece);
 		
+		// draw scorebox = ScoreBox(baseX, baseY, width, height, borderX, borderY, columnWidth, columnHeight, paddingY)
+		if (scorebox == null) scorebox = new ScoreBox(42, 310, 137, 211, 10, 23, 95, 22, 50);
 		scorebox.make(g, score, level, totalLines);
 		pauseButton.repaint();
 	}
@@ -276,24 +277,20 @@ public class Board extends JPanel implements ActionListener {
 	private void drawSquare(Graphics g, int x, int y, Tetrominoes shape) {
 		Color color = shape.color;
 		g.setColor(color);
-		g.fillRect(x + 1, y + 1, squareWidth() - 2, squareHeight() - 2);
+		g.fillRect(x + 1, y + 1, squareSide() - 2, squareSide() - 2);
 		g.setColor(color.brighter());
-		g.drawLine(x, y + squareHeight() - 1, x, y);
-		g.drawLine(x, y, x + squareWidth() - 1, y);
+		g.drawLine(x, y + squareSide() - 1, x, y);
+		g.drawLine(x, y, x + squareSide() - 1, y);
 		g.setColor(color.darker());
-		g.drawLine(x + 1, y + squareHeight() - 1, x + squareWidth() - 1, y + squareHeight() - 1);
-		g.drawLine(x + squareWidth() - 1, y + squareHeight() - 1, x + squareWidth() - 1, y + 1);
+		g.drawLine(x + 1, y + squareSide() - 1, x + squareSide() - 1, y + squareSide() - 1);
+		g.drawLine(x + squareSide() - 1, y + squareSide() - 1, x + squareSide() - 1, y + 1);
 	}
 
 	private Tetrominoes shapeAt(int x, int y) {
 		return board[y * BOARD_WIDTH + x];
 	}
 
-	private int squareWidth() {
-		return (int) getSize().getHeight() / BOARD_HEIGHT;
-	}
-
-	private int squareHeight() {
+	private int squareSide() {
 		return (int) getSize().getHeight() / BOARD_HEIGHT;
 	}
 
@@ -454,7 +451,7 @@ public class Board extends JPanel implements ActionListener {
 			}
 
 			public void mouseClicked(MouseEvent e) {
-				Sfx.ok.audio.playbackAudio(true);
+				Sfx.pause.audio.playbackAudio(false);
 				pause();
 			}
 

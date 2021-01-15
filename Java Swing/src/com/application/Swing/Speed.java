@@ -24,7 +24,7 @@ public class Speed {
 		while (currSpeed > highestSpeed && tempLines >= trigger) {
 			currSpeed -= adder;
 			tempLines -= trigger;
-			System.out.println(currSpeed);
+//			System.out.println(currSpeed);
 			add++;
 		}
 		return add;
