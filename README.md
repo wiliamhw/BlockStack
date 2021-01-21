@@ -35,7 +35,7 @@ Membuat game tetris.
 * Pemain akan naik satu level setiap 10 baris yang full.
 * Level dimulai dari level 1 hingga level 15.
 * Persamaan frekuensi turun balok (dalam millisecond)
-    * Un = 12.5n(n + 22)
+    * Un = 25(24 - n)
     * n = level
 
 ## Info Tambahan
