@@ -13,6 +13,6 @@ public class Asset {
 	}
 	
 	public static Audio getAudio(String name) {
-		return new Audio("src/com/blockstack/assets/music" + "/" + name);
+		return new Audio("src/com/blockstack/assets/sound" + "/" + name);
 	}
 }

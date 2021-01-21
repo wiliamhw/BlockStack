@@ -85,8 +85,9 @@ public class Board extends JPanel implements ActionListener {
 	}
 
 	public void start() {
-		if (isPaused)
+		if (isPaused) {
 			return;
+		}
 		
 		isStarted = true;
 		isFallingFinished = false;
@@ -96,6 +97,7 @@ public class Board extends JPanel implements ActionListener {
 		totalLines = 0;
 		level = 1;
 		
+		Sfx.gong.audio.replayAudio(false);
 		Sfx.ingame.audio.playAudio(true); // music
 		clearBoard();
 		nextPiece.setRandomShape();

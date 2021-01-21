@@ -26,7 +26,9 @@ public class Audio {
 		cursor(Asset.getAudio("cursor.wav")),
 		fix(Asset.getAudio("fix.wav")),
 		cancel(Asset.getAudio("cancel.wav")),
-		landing(Asset.getAudio("landing.wav"));
+		landing(Asset.getAudio("landing.wav")),
+		levelUp(Asset.getAudio("levelup.wav")),
+		gong(Asset.getAudio("gong.wav"));
 
 		public Audio audio;
 		private Sfx(Audio audio) {
@@ -59,6 +61,7 @@ public class Audio {
 		}
 	}
 
+	// play once
 	public void playAudio(boolean isLooped) {
 		try {
 			clip.start();
@@ -69,6 +72,7 @@ public class Audio {
 		}
 	}
 
+	// play multiple times
 	public void replayAudio(boolean isFast) {
 		try {
 			if (isFast) {

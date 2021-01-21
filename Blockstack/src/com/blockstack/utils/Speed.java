@@ -1,5 +1,7 @@
 package com.blockstack.utils;
 
+import com.blockstack.utils.Audio.Sfx;
+
 public class Speed {
 	private final int slowestSpeed; // in ms
 	private final int fastestSpeed;
@@ -25,6 +27,7 @@ public class Speed {
 			currSpeed -= subtractor;
 			tempLines -= trigger;
 //			System.out.println(currSpeed);
+			Sfx.levelUp.audio.replayAudio(false);
 			add++;
 		}
 		return add;
