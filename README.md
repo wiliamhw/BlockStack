@@ -46,10 +46,5 @@ Membuat game tetris.
 # Cara Download Assets
 1. Download [assets](https://drive.google.com/file/d/1Suljo33B7DQ7TWR-V7rHMfZzUMnTDup-/view?usp=sharing).
 2. Ekstrak file assets.
-<<<<<<< HEAD
-3. Copy semua file dari file assets ke folder `Blockstack\src\com\blockstack\assets`.
+3. Copy semua folder assets ke folder `Blockstack\src\com\blockstack`.
 4. Import/refresh folder `Blockstack` di IDE.
-=======
-3. Copy semua file dari file assets ke folder `Java Swing\src`.
-4. Import/refresh folder `Java Swing` di IDE.
->>>>>>> 438f0d7a5a7b86bd21c93b5d1de218d2db6b37d7
