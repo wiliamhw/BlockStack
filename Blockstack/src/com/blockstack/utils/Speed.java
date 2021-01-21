@@ -1,28 +1,28 @@
 package com.blockstack.utils;
 
 public class Speed {
-	private final int lowestSpeed; // in ms
-	private final int highestSpeed;
-	private final int adder;
+	private final int slowestSpeed; // in ms
+	private final int fastestSpeed;
+	private final int subtractor;
 	private final int trigger; // raise level every <trigger> lines
 	private int currSpeed;
 	private int counter;
 	public int tempLines;
 	
-	public Speed(int lowestSpeed, int highestSpeed, int adder, int trigger) {
+	public Speed(int slowestSpeed, int fastestSpeed, int subtractor, int trigger) {
 		tempLines = 0;
 		this.counter = 0;
-		this.lowestSpeed = lowestSpeed;
-		this.highestSpeed = highestSpeed;
-		this.currSpeed = lowestSpeed;
-		this.adder = adder;
+		this.slowestSpeed = slowestSpeed;
+		this.fastestSpeed = fastestSpeed;
+		this.currSpeed = slowestSpeed;
+		this.subtractor = subtractor;
 		this.trigger = trigger;
 	}
 	
 	public int raiseSpeed() {
 		int add = 0;
-		while (currSpeed > highestSpeed && tempLines >= trigger) {
-			currSpeed -= adder;
+		while (currSpeed > fastestSpeed && tempLines >= trigger) {
+			currSpeed -= subtractor;
 			tempLines -= trigger;
 //			System.out.println(currSpeed);
 			add++;
@@ -31,7 +31,7 @@ public class Speed {
 	}
 	
 	public void resetSpeed() {
-		currSpeed = lowestSpeed;
+		currSpeed = slowestSpeed;
 	}
 	
 	public int raisetempLines() {
@@ -44,13 +44,12 @@ public class Speed {
 	}
 	
 	public boolean doAction() {
-		counter += adder;
+		counter += subtractor;
 		
 		if (counter >= currSpeed) {
 			counter = 0;
 			return true;
 		}
-		
 		return false;
 	}
 }
