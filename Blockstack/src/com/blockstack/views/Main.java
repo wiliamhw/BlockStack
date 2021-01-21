@@ -7,14 +7,9 @@ import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
-<<<<<<< HEAD:Blockstack/src/com/blockstack/views/Main.java
 import com.blockstack.utils.Audio.Sfx;
 import com.blockstack.utils.Asset;
 import com.blockstack.views.menus.MainMenu;
-=======
-import com.application.Swing.Audio.Sfx;
->>>>>>> 438f0d7a5a7b86bd21c93b5d1de218d2db6b37d7:Java Swing/src/com/application/Swing/Main.java
-
 import java.io.*;
 
 public class Main {

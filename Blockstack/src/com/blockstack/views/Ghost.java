@@ -1,4 +1,4 @@
-package com.application.Swing;
+package com.blockstack.views;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -6,7 +6,8 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Stroke;
 
-import com.application.Swing.Shape.Tetrominoes;
+import com.blockstack.utils.Shape;
+import com.blockstack.utils.Shape.Tetrominoes;
 
 public class Ghost {
 	private final int squareWidth;

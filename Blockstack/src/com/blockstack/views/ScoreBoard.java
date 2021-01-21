@@ -2,13 +2,9 @@ package com.blockstack.views;
 
 import javax.swing.*;
 
-<<<<<<< HEAD:Blockstack/src/com/blockstack/views/ScoreBoard.java
 import com.blockstack.utils.Asset;
 import com.blockstack.utils.Audio.Sfx;
 import com.blockstack.views.menus.MainMenu;
-=======
-import com.application.Swing.Audio.Sfx;
->>>>>>> 438f0d7a5a7b86bd21c93b5d1de218d2db6b37d7:Java Swing/src/com/application/Swing/ScoreBoard.java
 
 import java.awt.*;
 import java.awt.event.*;
@@ -34,11 +30,7 @@ public class ScoreBoard extends JPanel{
 	
 	public ScoreBoard(int width, int height) {
 		try {
-<<<<<<< HEAD:Blockstack/src/com/blockstack/views/ScoreBoard.java
 			iconOkay = Asset.getImageIcon("OkayButton.png");
-=======
-			iconOkay = new ImageIcon("src/images/OkayButton.png");
->>>>>>> 438f0d7a5a7b86bd21c93b5d1de218d2db6b37d7:Java Swing/src/com/application/Swing/ScoreBoard.java
 		} catch(Exception e) {
 			System.out.println(e);
 		}
@@ -130,11 +122,7 @@ public class ScoreBoard extends JPanel{
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if(e.getActionCommand().equals("Okay") || e.getActionCommand().equals("")) {
-<<<<<<< HEAD:Blockstack/src/com/blockstack/views/ScoreBoard.java
 				Sfx.ok.audio.replayAudio(true);
-=======
-				Sfx.ok.audio.playbackAudio(true);
->>>>>>> 438f0d7a5a7b86bd21c93b5d1de218d2db6b37d7:Java Swing/src/com/application/Swing/ScoreBoard.java
 				if(flagPlay == 1) {
 					scoreList.put(score, insertName.getText());
 					writeFile();
@@ -214,11 +202,7 @@ public class ScoreBoard extends JPanel{
 	private void setHover(JButton button) {
 		button.addMouseListener(new MouseAdapter() {
 			public void mouseEntered(MouseEvent e) {
-<<<<<<< HEAD:Blockstack/src/com/blockstack/views/ScoreBoard.java
 				Sfx.cursor.audio.replayAudio(true);
-=======
-				Sfx.cursor.audio.playbackAudio(true);
->>>>>>> 438f0d7a5a7b86bd21c93b5d1de218d2db6b37d7:Java Swing/src/com/application/Swing/ScoreBoard.java
 				button.setBorder(BorderFactory.createLineBorder(Color.GREEN, 5));
 			}
 			public void mouseExited(MouseEvent e) {
