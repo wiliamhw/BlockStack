@@ -1,10 +1,10 @@
-package com.application.Swing;
+package com.blockstack.utils;
 
 import java.awt.Color;
 import java.util.Random;
 
 public class Shape {
-	enum Tetrominoes {
+	public enum Tetrominoes {
 		NoShape(new int[][] { { 0, 0 }, { 0, 0 }, { 0, 0 }, { 0, 0 } }, new Color(0, 0, 0)),
 		ZShape(new int[][] { { -1, -1 }, { 0, -1 }, { 0, 0 }, { 1, 0 } }, new Color(204, 102, 102)),
 		SShape(new int[][] { { -1, 0 }, { 0, 0 }, { 0, -1 }, { 1, -1 } }, new Color(102, 204, 102)),

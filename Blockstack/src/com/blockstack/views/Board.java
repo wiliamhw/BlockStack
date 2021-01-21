@@ -1,4 +1,4 @@
-package com.application.Swing;
+package com.blockstack.views;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -19,12 +19,17 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
-import com.application.Swing.Audio.Sfx;
-import com.application.Swing.Shape.Tetrominoes;
+import com.blockstack.utils.Asset;
+import com.blockstack.utils.Shape;
+import com.blockstack.utils.Speed;
+import com.blockstack.utils.Audio.Sfx;
+import com.blockstack.utils.Shape.Tetrominoes;
+import com.blockstack.views.boxs.PieceBox;
+import com.blockstack.views.boxs.ScoreBox;
+import com.blockstack.views.menus.PauseMenu;
 
 public class Board extends JPanel implements ActionListener {
-
-	private final ImageIcon icon = new ImageIcon("src/images/null.png");
+	private final ImageIcon icon = Asset.getImageIcon("null.png");
 	private final Tetrominoes[] board = new Tetrominoes[BOARD_WIDTH * BOARD_HEIGHT];
 	private final PauseMenu pauseDialog;
 	private final Timer timer;
@@ -57,7 +62,7 @@ public class Board extends JPanel implements ActionListener {
 
 		// pause Button
 		try {
-			iconPause = new ImageIcon("src/images/PauseButton.png");
+			iconPause = Asset.getImageIcon("PauseButton.png");
 		} catch(Exception e) {
 			System.out.println(e);
 		}
@@ -163,7 +168,7 @@ public class Board extends JPanel implements ActionListener {
 
 	private void hold() {
 		if (isHold) {
-			Sfx.cancel.audio.playbackAudio(true);
+			Sfx.cancel.audio.replayAudio(true);
 			return;
 		}
 		
@@ -196,7 +201,7 @@ public class Board extends JPanel implements ActionListener {
 			int y = newY - newPiece.getY(i);
 
 			if (x < 0 || x >= BOARD_WIDTH || y < 0 || y >= BOARD_HEIGHT) {
-				Sfx.fix.audio.playbackAudio(false);
+				Sfx.fix.audio.replayAudio(false);
 				return false;
 			}
 
@@ -274,7 +279,7 @@ public class Board extends JPanel implements ActionListener {
 		pauseButton.repaint();
 	}
 
-	private void drawSquare(Graphics g, int x, int y, Tetrominoes shape) {
+	public void drawSquare(Graphics g, int x, int y, Tetrominoes shape) {
 		Color color = shape.color;
 		g.setColor(color);
 		g.fillRect(x + 1, y + 1, squareSide() - 2, squareSide() - 2);
@@ -308,7 +313,7 @@ public class Board extends JPanel implements ActionListener {
 
 	private void oneLineDown() {
 		if (!tryMove(currPiece, curX, curY - 1)) {
-			Sfx.landing.audio.playbackAudio(true);
+			Sfx.landing.audio.replayAudio(true);
 			pieceDropped();
 		}
 	}
@@ -361,16 +366,16 @@ public class Board extends JPanel implements ActionListener {
 		case 0:
 			break;
 		case 1:
-			Sfx._single.audio.playbackAudio(false);
+			Sfx._single.audio.replayAudio(false);
 			break;
 		case 2:
-			Sfx._double.audio.playbackAudio(false);
+			Sfx._double.audio.replayAudio(false);
 			break;
 		case 3:
-			Sfx._triple.audio.playbackAudio(false);
+			Sfx._triple.audio.replayAudio(false);
 			break;
 		default:
-			Sfx._tetris.audio.playbackAudio(false);
+			Sfx._tetris.audio.replayAudio(false);
 			break;
 		}
 	}
@@ -400,43 +405,43 @@ public class Board extends JPanel implements ActionListener {
 
 			switch (keyCode) {
 			case KeyEvent.VK_ESCAPE:
-				Sfx.pause.audio.playbackAudio(false);
+				Sfx.pause.audio.replayAudio(false);
 				pause();
 				break;
 			case KeyEvent.VK_LEFT:
-				Sfx.move.audio.playbackAudio(false);
+				Sfx.move.audio.replayAudio(false);
 				tryMove(currPiece, curX - 1, curY);
 				break;
 			case KeyEvent.VK_RIGHT:
-				Sfx.move.audio.playbackAudio(false);
+				Sfx.move.audio.replayAudio(false);
 				tryMove(currPiece, curX + 1, curY);
 				break;
 			case KeyEvent.VK_UP:
-				Sfx.rotate.audio.playbackAudio(false);
+				Sfx.rotate.audio.replayAudio(false);
 				tryMove(currPiece.rotateRight(), curX, curY);
 				break;
 			case 'z':
 			case 'Z':
-				Sfx.rotate.audio.playbackAudio(false);
+				Sfx.rotate.audio.replayAudio(false);
 				tryMove(currPiece.rotateLeft(), curX, curY);
 				break;
 			case KeyEvent.VK_SPACE:
-				Sfx.harddrop.audio.playbackAudio(false);
+				Sfx.harddrop.audio.replayAudio(false);
 				dropDown();
 				break;
 			case KeyEvent.VK_DOWN:
-				Sfx.softdrop.audio.playbackAudio(false);
+				Sfx.softdrop.audio.replayAudio(false);
 				++score;
 				oneLineDown();
 				break;
 			case 'c':
 			case 'C':
-				if (!isHold) Sfx.hold.audio.playbackAudio(false);
+				if (!isHold) Sfx.hold.audio.replayAudio(false);
 				hold();
 				break;
 			case 'g':
 			case 'G':
-				Sfx.ok.audio.playbackAudio(false);
+				Sfx.ok.audio.replayAudio(false);
 				enableGhost = !enableGhost;
 				break;
 			}
@@ -446,12 +451,12 @@ public class Board extends JPanel implements ActionListener {
 	public void setPauseAction(JButton button) {
 		button.addMouseListener(new MouseAdapter() {
 			public void mouseEntered(MouseEvent e) {
-				Sfx.cursor.audio.playbackAudio(true);
+				Sfx.cursor.audio.replayAudio(true);
 				button.setBorder(BorderFactory.createLineBorder(Color.GREEN, 5));
 			}
 
 			public void mouseClicked(MouseEvent e) {
-				Sfx.pause.audio.playbackAudio(false);
+				Sfx.pause.audio.replayAudio(false);
 				pause();
 			}
 

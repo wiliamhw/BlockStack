@@ -1,8 +1,11 @@
-package com.application.Swing;
+package com.blockstack.views.menus;
 
 import javax.swing.*;
 
-import com.application.Swing.Audio.Sfx;
+import com.blockstack.utils.Asset;
+import com.blockstack.utils.Audio.Sfx;
+import com.blockstack.views.Board;
+import com.blockstack.views.ScoreBoard;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -36,12 +39,12 @@ public class MainMenu extends JPanel {
 		this.setPreferredSize(new Dimension(areaWidth, areaHeight));
 		setLayout(null);
 		try {
-			image = ImageIO.read(new File("src/images/MenuLogo.png"));
-			home = ImageIO.read(new File("src/images/mainmenu.jpg"));
-			iconStart = new ImageIcon("src/images/StartGameButton.png");
-			iconScore = new ImageIcon("src/images/ScoreButton.png");
-			iconCredits = new ImageIcon("src/images/CreditsButton.png");
-			iconExit = new ImageIcon("src/images/ExitButton.png");
+			image = ImageIO.read(Asset.getFile("images", "MenuLogo.png"));
+			home = ImageIO.read(Asset.getFile("images", "mainmenu.jpg"));
+			iconStart = Asset.getImageIcon("StartGameButton.png");
+			iconScore = Asset.getImageIcon("ScoreButton.png");
+			iconCredits = Asset.getImageIcon("CreditsButton.png");
+			iconExit = Asset.getImageIcon("ExitButton.png");
 		} catch(IOException e) {
 			System.out.println(e);
 			
@@ -61,7 +64,7 @@ public class MainMenu extends JPanel {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			Sfx.ok.audio.playbackAudio(true);
+			Sfx.ok.audio.replayAudio(true);
 			if(e.getActionCommand().equals("") || e.getActionCommand().equals("Start Game")) {			
 				JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(play.getParent());
 				frame.setContentPane(new Board(frame));
@@ -103,7 +106,7 @@ public class MainMenu extends JPanel {
 	private void setHover(JButton button) {
 		button.addMouseListener(new MouseAdapter() {
 			public void mouseEntered(MouseEvent e) {
-				Sfx.cursor.audio.playbackAudio(true);
+				Sfx.cursor.audio.replayAudio(true);
 				button.setBorder(BorderFactory.createLineBorder(Color.GREEN, 5));
 			}
 			public void mouseExited(MouseEvent e) {

@@ -1,4 +1,4 @@
-package com.application.Swing;
+package com.blockstack.views;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -7,7 +7,13 @@ import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
+<<<<<<< HEAD:Blockstack/src/com/blockstack/views/Main.java
+import com.blockstack.utils.Audio.Sfx;
+import com.blockstack.utils.Asset;
+import com.blockstack.views.menus.MainMenu;
+=======
 import com.application.Swing.Audio.Sfx;
+>>>>>>> 438f0d7a5a7b86bd21c93b5d1de218d2db6b37d7:Java Swing/src/com/application/Swing/Main.java
 
 import java.io.*;
 
@@ -20,7 +26,7 @@ public class Main {
 	public static void main(String[] args) {
 		// ingame background
 		try {
-			background = ImageIO.read(new File("src/images/ingame.jpg"));
+			background = ImageIO.read(Asset.getFile("images", "ingame.jpg"));
 		} catch(IOException e) {
 			System.out.println(e);
 		}
@@ -59,7 +65,7 @@ public class Main {
 	}
 	
 	private static void initScore() {
-		File scoreFile = new File("src/score/ScoreBoard.dat");
+		File scoreFile = Asset.getFile("score", "ScoreBoard.dat");
 		Writer writeFile = null;
 		try {
 			if(scoreFile.createNewFile()) {
@@ -85,8 +91,6 @@ public class Main {
 				if(writeFile != null)
 					writeFile.close();
 			} catch (IOException e) {}
-		}
-		
-		
+		}	
 	}
 }
