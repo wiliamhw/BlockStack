@@ -74,7 +74,7 @@ public class Main {
 						+ "Jupiter:3000\n"
 						+ "Timothy:2000\n"
 						+ "Oktovian:1000\n"
-						+ "Noob:0\n");
+						+ "Noob:0");
 				writeFile.write(defaultScore);
 				
 			}
