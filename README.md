@@ -44,7 +44,7 @@ Membuat game tetris.
 * Asset audio diambil dari game Tetris99 di Nintendo Switch.
 
 # Cara Download Assets
-1. Download [assets](https://drive.google.com/file/d/1Suljo33B7DQ7TWR-V7rHMfZzUMnTDup-/view?usp=sharing).
+1. Download [assets](https://drive.google.com/file/d/1nqLldKAIwaN7JLBMdtqA60jk2Kk7wRlM/view?usp=sharing).
 2. Ekstrak file assets.
 3. Copy semua folder assets ke folder `Blockstack\src\com\blockstack`.
 4. Import/refresh folder `Blockstack` di IDE.
